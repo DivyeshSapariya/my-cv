@@ -4,1528 +4,616 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Divyesh J. Sapariya — Sr. WordPress Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d1117;
-    --bg2: #161b22;
-    --bg3: #21262d;
-    --bg4: #30363d;
-    --border: #30363d;
-    --border2: #21262d;
-    --green: #3fb950;
-    --green2: #238636;
-    --blue: #58a6ff;
-    --blue2: #1f6feb;
-    --purple: #bc8cff;
-    --orange: #e3b341;
-    --red: #ff7b72;
-    --pink: #f778ba;
-    --teal: #39d353;
-    --text: #e6edf3;
-    --text2: #8b949e;
-    --text3: #6e7681;
-    --accent: #58a6ff;
-    --tab-active: #0d1117;
-  }
-  
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+:root {
+  --bg:       #020408;
+  --bg1:      #050c12;
+  --bg2:      #080f18;
+  --bg3:      #0a1520;
+  --bg4:      #0d1c2a;
+  --cyan:     #00e5ff;
+  --cyan2:    #00b4cc;
+  --green:    #00ff9d;
+  --purple:   #b44aff;
+  --orange:   #ff9500;
+  --red:      #ff3860;
+  --text:     #cde8f0;
+  --text2:    #5f8fa8;
+  --text3:    #2d5068;
+  --border:   rgba(0,229,255,0.12);
+  --border2:  rgba(0,229,255,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:9999;}
 
-  /* ─── BROWSER CHROME ─── */
-  .browser-chrome {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-  }
-  .browser-titlebar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    background: var(--bg3);
-    border-bottom: 1px solid var(--border);
-  }
-  .browser-dots { display: flex; gap: 6px; }
-  .dot {
-    width: 12px; height: 12px; border-radius: 50%;
-    cursor: pointer; transition: opacity 0.2s;
-  }
-  .dot:hover { opacity: 0.8; }
-  .dot.red { background: #ff5f57; }
-  .dot.yellow { background: #febc2e; }
-  .dot.green { background: #28c840; }
+/* ── TOP BAR ── */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(2,4,8,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 20px;height:52px;gap:16px;}
+.topbar-logo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;white-space:nowrap;text-shadow:0 0 12px var(--cyan);}
+.topbar-logo span{color:var(--green);}
+.topbar-tabs{display:flex;gap:0;flex:1;overflow:hidden;}
+.ttab{padding:0 16px;height:52px;display:flex;align-items:center;gap:7px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text2);border-right:1px solid var(--border);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;}
+.ttab.active{color:var(--cyan);border-bottom:2px solid var(--cyan);background:rgba(0,229,255,0.04);}
+.ttab-dot{width:6px;height:6px;border-radius:50%;}
+.topbar-url{flex:1;max-width:380px;background:rgba(0,229,255,0.04);border:1px solid var(--border);border-radius:4px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.topbar-url .lock{color:var(--green);}
+.topbar-url .url-domain{color:var(--cyan);}
+.topbar-actions{display:flex;gap:6px;}
+.topbar-btn{width:28px;height:28px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;transition:all .2s;}
+.topbar-btn:hover{border-color:var(--cyan);color:var(--cyan);}
 
-  .browser-tabs {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex: 1;
-    overflow-x: auto;
-  }
-  .tab {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 16px;
-    font-size: 11px;
-    color: var(--text2);
-    border-right: 1px solid var(--border);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-    background: var(--bg3);
-    border-top: 2px solid transparent;
-  }
-  .tab.active {
-    background: var(--bg);
-    color: var(--text);
-    border-top: 2px solid var(--blue);
-  }
-  .tab-icon { font-size: 12px; }
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:calc(100vh - 52px);}
 
-  .browser-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-  }
-  .nav-btn {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text2);
-    width: 28px; height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .nav-btn:hover { color: var(--text); border-color: var(--blue); }
-  .url-bar {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 5px 16px;
-    font-size: 11px;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .url-lock { color: var(--green); font-size: 10px; }
-  .url-text { color: var(--text2); }
-  .url-text span { color: var(--text); }
+/* ══ SIDEBAR ══ */
+.sidebar{width:260px;min-width:260px;background:var(--bg1);border-right:1px solid var(--border2);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.sidebar::after{content:'';position:absolute;top:0;right:0;width:1px;height:100%;background:linear-gradient(180deg,transparent 0%,var(--cyan) 50%,transparent 100%);opacity:0.4;animation:scanV 5s linear infinite;}
+@keyframes scanV{0%{transform:translateY(-100%)}100%{transform:translateY(200%)}}
 
-  /* ─── EDITOR LAYOUT ─── */
-  .editor-layout {
-    display: flex;
-    min-height: calc(100vh - 90px);
-  }
+/* Profile block */
+.sb-profile{padding:22px 18px 18px;background:linear-gradient(160deg,rgba(0,229,255,0.06) 0%,transparent 70%);border-bottom:1px solid var(--border);position:relative;}
+.sb-profile::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.5;}
+.sb-avatar-wrap{display:flex;align-items:center;gap:13px;margin-bottom:14px;}
+.sb-avatar{width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,#091f30,#060f1a);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--cyan);text-shadow:0 0 12px var(--cyan);flex-shrink:0;position:relative;box-shadow:0 0 20px rgba(0,229,255,0.15);}
+.sb-avatar::after{content:'';position:absolute;bottom:-3px;right:-3px;width:10px;height:10px;background:var(--green);border-radius:50%;border:2px solid var(--bg1);box-shadow:0 0 8px var(--green);}
+.sb-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--text);letter-spacing:0.3px;line-height:1.4;margin-bottom:3px;}
+.sb-role{font-size:8px;font-family:'JetBrains Mono',monospace;color:var(--cyan2);letter-spacing:1.5px;text-transform:uppercase;}
+.sb-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.sb-stat{background:rgba(0,229,255,0.04);border:1px solid var(--border);border-radius:6px;padding:8px 10px;text-align:center;transition:all .2s;}
+.sb-stat:hover{border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.08);}
+.sb-stat-n{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,0.6);display:block;line-height:1.2;}
+.sb-stat-l{font-size:7px;font-family:'JetBrains Mono',monospace;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;}
 
-  /* ─── SIDEBAR (FILE TREE) ─── */
-  .sidebar {
-    width: 240px;
-    min-width: 240px;
-    background: var(--bg2);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-  }
-  .sidebar-header {
-    padding: 12px 16px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--text3);
-    border-bottom: 1px solid var(--border2);
-    background: var(--bg3);
-  }
-  .file-tree { padding: 8px 0; flex: 1; }
-  .tree-section { margin-bottom: 4px; }
-  .tree-folder {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 16px;
-    font-size: 11px;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .tree-folder:hover { color: var(--text); background: var(--bg3); }
-  .tree-folder .arrow { font-size: 9px; transition: transform 0.2s; }
-  .tree-folder.open .arrow { transform: rotate(90deg); }
-  .tree-file {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 16px 4px 32px;
-    font-size: 11px;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-  .tree-file:hover { background: var(--bg3); color: var(--text); }
-  .tree-file.active { background: var(--bg4); color: var(--text); }
-  .file-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .dot-php { background: #7c7cb5; }
-  .dot-js { background: #f1e05a; }
-  .dot-css { background: #563d7c; }
-  .dot-md { background: var(--blue); }
-  .dot-json { background: var(--orange); }
-  .dot-html { background: var(--red); }
-  .dot-py { background: var(--green); }
+/* NAV */
+.sb-nav{padding:10px 0;flex:1;overflow-y:auto;}
+.sb-sec-lbl{padding:10px 18px 4px;font-size:7px;font-family:'Orbitron',monospace;color:var(--text3);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.sb-sec-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;text-decoration:none;position:relative;transition:all .25s;border-left:2px solid transparent;margin:1px 0;}
+.sb-item::before{content:'';position:absolute;inset:0;background:transparent;transition:background .25s;}
+.sb-item:hover::before,.sb-item.active::before{background:linear-gradient(90deg,rgba(0,229,255,0.08),transparent);}
+.sb-item.active{border-left:2px solid var(--cyan);}
+.sb-item:hover{border-left:2px solid rgba(0,229,255,0.35);}
+.sb-item-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;background:rgba(0,229,255,0.05);border:1px solid var(--border);flex-shrink:0;position:relative;z-index:1;transition:all .25s;}
+.sb-item.active .sb-item-icon,.sb-item:hover .sb-item-icon{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.12);box-shadow:0 0 12px rgba(0,229,255,0.2);}
+.sb-item-body{flex:1;min-width:0;position:relative;z-index:1;}
+.sb-item-name{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text2);transition:color .25s;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-item.active .sb-item-name,.sb-item:hover .sb-item-name{color:var(--cyan);}
+.sb-item-sub{font-size:8px;color:var(--text3);font-family:'JetBrains Mono',monospace;display:block;margin-top:1px;}
+.sb-badge{font-size:7px;font-family:'Orbitron',monospace;padding:2px 6px;border-radius:3px;border:1px solid;position:relative;z-index:1;white-space:nowrap;}
+.b-cyan{color:var(--cyan);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.08);}
+.b-green{color:var(--green);border-color:rgba(0,255,157,0.3);background:rgba(0,255,157,0.08);}
+.b-purple{color:var(--purple);border-color:rgba(180,74,255,0.3);background:rgba(180,74,255,0.08);}
+.b-orange{color:var(--orange);border-color:rgba(255,149,0,0.3);background:rgba(255,149,0,0.08);}
 
-  .sidebar-footer {
-    padding: 12px 16px;
-    border-top: 1px solid var(--border2);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .status-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10px;
-    color: var(--text3);
-  }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+/* Footer */
+.sb-footer{padding:14px 18px;border-top:1px solid var(--border);background:rgba(0,0,0,0.25);}
+.sb-footer-lbl{font-size:7px;font-family:'Orbitron',monospace;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:9px;}
+.sb-pills{display:flex;flex-wrap:wrap;gap:4px;}
+.sb-pill{font-size:8px;font-family:'JetBrains Mono',monospace;padding:3px 7px;border-radius:3px;border:1px solid var(--border);color:var(--text3);transition:all .2s;cursor:default;}
+.sb-pill:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.06);}
+.sb-online{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:8px;font-family:'JetBrains Mono',monospace;color:var(--green);}
+.sb-online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(0.8)}}
 
-  /* ─── MAIN CONTENT ─── */
-  .main-content {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;background:var(--bg);position:relative;}
+.main::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.022) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+.main-inner{position:relative;z-index:1;}
 
-  /* ─── EDITOR TABS ─── */
-  .editor-tabs {
-    display: flex;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-  }
-  .editor-tab {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    font-size: 11px;
-    color: var(--text2);
-    border-right: 1px solid var(--border2);
-    cursor: pointer;
-    white-space: nowrap;
-    background: var(--bg2);
-    border-top: 1px solid transparent;
-    transition: all 0.2s;
-  }
-  .editor-tab.active {
-    background: var(--bg);
-    color: var(--text);
-    border-top: 1px solid var(--blue);
-  }
-  .editor-tab:hover:not(.active) { background: var(--bg3); color: var(--text); }
-  .tab-close {
-    width: 14px; height: 14px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 9px;
-    opacity: 0;
-    transition: opacity 0.2s;
-    background: var(--bg4);
-  }
-  .editor-tab:hover .tab-close { opacity: 1; }
+/* ── HERO ── */
+.hero{padding:48px 44px 36px;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+.hero-glow{position:absolute;top:-80px;left:-80px;right:-80px;height:320px;background:radial-gradient(ellipse at 25% 55%,rgba(0,229,255,0.07) 0%,transparent 65%),radial-gradient(ellipse at 75% 25%,rgba(180,74,255,0.05) 0%,transparent 65%);pointer-events:none;}
+.hero-tag{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:3px;color:var(--cyan2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.hero-tag::before{content:'';width:32px;height:1px;background:var(--cyan2);box-shadow:0 0 6px var(--cyan2);}
+.hero-tag::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.hero-name{font-family:'Orbitron',sans-serif;font-size:clamp(26px,4.5vw,56px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:8px;}
+.hero-name .n1{background:linear-gradient(135deg,#e8f4ff 0%,#a0d4ff 50%,#00e5ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-name .n2{background:linear-gradient(135deg,#00e5ff 0%,#00ff9d 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(0,229,255,0.4));}
+.hero-role{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);margin-bottom:20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.hero-role .kw{color:var(--cyan);}
+.hero-role .str{color:var(--green);}
+.hero-role .br{color:var(--text3);}
+.hero-bio{font-size:13px;color:var(--text2);max-width:560px;line-height:1.75;margin-bottom:28px;border-left:2px solid var(--border2);padding-left:16px;}
+.hero-contacts{display:flex;flex-wrap:wrap;gap:9px;}
+.contact-chip{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);text-decoration:none;background:rgba(0,229,255,0.03);transition:all .25s;position:relative;overflow:hidden;}
+.contact-chip::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,0.08),transparent);opacity:0;transition:opacity .25s;}
+.contact-chip:hover{border-color:var(--cyan);color:var(--cyan);}
+.contact-chip:hover::before{opacity:1;}
 
-  /* ─── CODE CONTENT ─── */
-  .code-content {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    background: var(--bg);
-    padding: 0;
-  }
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);}
+.stat-box{padding:20px 24px;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background .25s;}
+.stat-box:last-child{border-right:none;}
+.stat-box:hover{background:rgba(0,229,255,0.03);}
+.stat-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan2),transparent);opacity:0;transition:opacity .25s;}
+.stat-box:hover::after{opacity:1;}
+.stat-n{font-family:'Orbitron',monospace;font-size:26px;font-weight:700;color:var(--cyan);text-shadow:0 0 20px rgba(0,229,255,0.5);display:block;line-height:1;margin-bottom:4px;}
+.stat-l{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;}
 
-  .line-numbers {
-    padding: 24px 0;
-    background: var(--bg2);
-    border-right: 1px solid var(--border2);
-    min-width: 48px;
-    text-align: right;
-    font-size: 12px;
-    color: var(--text3);
-    line-height: 1.6;
-    user-select: none;
-    position: sticky;
-    left: 0;
-  }
-  .line-numbers span { display: block; padding: 0 12px; }
+/* ── SECTION HD ── */
+.section-hd{display:flex;align-items:center;gap:11px;margin-bottom:22px;}
+.section-hd-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.section-hd-icon{width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:rgba(0,229,255,0.07);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px rgba(0,229,255,0.1);}
+.section-hd-label{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2.5px;color:var(--cyan);text-transform:uppercase;}
+.section-hd-count{font-size:8px;font-family:'JetBrains Mono',monospace;color:var(--text3);background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:3px;}
 
-  .code-area {
-    flex: 1;
-    padding: 24px 32px;
-    line-height: 1.6;
-    font-size: 13px;
-  }
+/* ── CONTENT GRID ── */
+.content-grid{display:grid;grid-template-columns:1fr 1fr;}
+.panel{padding:32px 36px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+.panel.full{grid-column:1/-1;border-right:none;}
+.panel:nth-child(even){border-right:none;}
 
-  /* ─── CV SECTIONS styled as code ─── */
-  .code-comment { color: var(--text3); font-style: italic; }
-  .code-keyword { color: var(--purple); }
-  .code-string { color: var(--orange); }
-  .code-var { color: var(--blue); }
-  .code-func { color: var(--green); }
-  .code-prop { color: var(--red); }
-  .code-num { color: var(--teal); }
-  .code-class { color: #ffa657; }
-  .code-bracket { color: var(--text2); }
+/* ── EXPERIENCE ── */
+.exp-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:14px;position:relative;overflow:hidden;transition:all .3s;}
+.exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--purple));}
+.exp-card:last-child::before{background:linear-gradient(180deg,var(--green),var(--cyan));}
+.exp-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--cyan2),transparent);opacity:0;transition:opacity .3s;}
+.exp-card:hover{border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.03);transform:translateX(3px);box-shadow:0 0 30px rgba(0,229,255,0.05);}
+.exp-card:hover::after{opacity:.5;}
+.exp-co{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.exp-role{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--cyan);margin-bottom:3px;}
+.exp-dates{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text3);margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+.exp-badge{font-size:7px;padding:2px 7px;border-radius:3px;font-family:'Orbitron',monospace;letter-spacing:0.5px;}
+.eb-cur{background:rgba(0,255,157,0.1);color:var(--green);border:1px solid rgba(0,255,157,0.3);box-shadow:0 0 8px rgba(0,255,157,0.15);}
+.eb-old{background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid rgba(0,229,255,0.3);}
+.exp-ul{list-style:none;}
+.exp-ul li{font-size:11px;color:var(--text2);padding:2.5px 0 2.5px 16px;position:relative;line-height:1.55;}
+.exp-ul li::before{content:'▸';position:absolute;left:0;color:var(--cyan2);font-size:9px;}
 
-  /* ─── HERO SECTION ─── */
-  .cv-hero {
-    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 48px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  .cv-hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: 
-      radial-gradient(ellipse at 20% 50%, rgba(31, 111, 235, 0.08) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(188, 140, 255, 0.08) 0%, transparent 60%);
-  }
-  .cv-hero-grid {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 40px;
-    align-items: center;
-    position: relative;
-  }
-  .cv-name {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(32px, 4vw, 52px);
-    font-weight: 800;
-    letter-spacing: -1px;
-    line-height: 1.1;
-    background: linear-gradient(135deg, #e6edf3 30%, #58a6ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 8px;
-  }
-  .cv-role {
-    font-size: 13px;
-    color: var(--green);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .cv-role::before { content: '//'; color: var(--text3); }
-  .cv-tagline {
-    font-size: 13px;
-    color: var(--text2);
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 24px;
-  }
-  .cv-contacts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .contact-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    font-size: 11px;
-    color: var(--text2);
-    text-decoration: none;
-    background: var(--bg2);
-    transition: all 0.25s;
-  }
-  .contact-pill:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-    background: rgba(88, 166, 255, 0.08);
-  }
-  .contact-pill .icon { font-size: 13px; }
+/* ── SKILLS ── */
+.skill-group{margin-bottom:16px;}
+.skill-group-label{font-size:7px;font-family:'Orbitron',monospace;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:8px;}
+.skill-group-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.skill-tag{font-size:10px;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:3px;border:1px solid var(--border);color:var(--text2);background:var(--bg2);cursor:default;transition:all .2s;}
+.skill-tag:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.07);text-shadow:0 0 8px var(--cyan);}
+.t-cyan{border-color:rgba(0,229,255,0.3);color:var(--cyan);background:rgba(0,229,255,0.08);}
+.t-green{border-color:rgba(0,255,157,0.3);color:var(--green);background:rgba(0,255,157,0.08);}
+.t-purple{border-color:rgba(180,74,255,0.3);color:var(--purple);background:rgba(180,74,255,0.08);}
+.t-orange{border-color:rgba(255,149,0,0.3);color:var(--orange);background:rgba(255,149,0,0.08);}
 
-  .avatar-box {
-    position: relative;
-  }
-  .avatar-ring {
-    width: 140px; height: 140px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--blue2), var(--purple));
-    padding: 3px;
-    position: relative;
-  }
-  .avatar-inner {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    background: var(--bg2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 40px;
-    font-weight: 800;
-    color: var(--blue);
-  }
-  .avatar-badge {
-    position: absolute;
-    bottom: 4px; right: 4px;
-    background: var(--green);
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    border: 3px solid var(--bg);
-  }
+/* ── PROJECTS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:17px;transition:all .3s;position:relative;overflow:hidden;cursor:default;}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s;}
+.proj-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.4),0 0 20px rgba(0,229,255,0.06);}
+.proj-card:hover::before{opacity:1;}
+.proj-icon{width:32px;height:32px;border-radius:7px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.proj-name{font-family:'Orbitron',monospace;font-size:10px;font-weight:600;color:var(--text);line-height:1.3;}
+.proj-header{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.proj-lang{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--cyan);display:flex;align-items:center;gap:4px;}
+.proj-lang::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 5px var(--cyan);}
+.proj-card:nth-child(3n+2) .proj-lang{color:var(--purple);}
+.proj-card:nth-child(3n+2) .proj-lang::before{background:var(--purple);box-shadow:0 0 5px var(--purple);}
+.proj-card:nth-child(3n+3) .proj-lang{color:var(--green);}
+.proj-card:nth-child(3n+3) .proj-lang::before{background:var(--green);box-shadow:0 0 5px var(--green);}
+.proj-days{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text3);margin-left:auto;}
+.proj-meta{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+.proj-desc{font-size:10px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 
-  /* ─── STATS BAR ─── */
-  .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-bottom: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .stat-cell {
-    padding: 16px 24px;
-    border-right: 1px solid var(--border);
-    text-align: center;
-  }
-  .stat-cell:last-child { border-right: none; }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--blue);
-    display: block;
-  }
-  .stat-label {
-    font-size: 10px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 2px;
-  }
+/* ── PLUGINS ── */
+.plugin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.plugin-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;text-decoration:none;transition:all .25s;position:relative;overflow:hidden;}
+.plugin-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);box-shadow:0 0 8px var(--green);}
+.plugin-card:hover{border-color:rgba(0,255,157,0.3);background:rgba(0,255,157,0.03);transform:translateY(-2px);}
+.plugin-name{font-family:'Orbitron',monospace;font-size:10px;color:var(--text);margin-bottom:5px;}
+.plugin-url{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--green);word-break:break-all;line-height:1.4;}
+.plugin-live{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:7px;font-family:'Orbitron',monospace;color:var(--green);background:rgba(0,255,157,0.1);border:1px solid rgba(0,255,157,0.25);padding:2px 8px;border-radius:3px;}
+.plugin-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 1.5s infinite;}
 
-  /* ─── CONTENT SECTIONS ─── */
-  .sections-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    padding: 0;
-  }
-  .section-panel {
-    padding: 32px;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .section-panel.full-width {
-    grid-column: 1 / -1;
-    border-right: none;
-  }
-  .section-panel:nth-child(even) { border-right: none; }
+/* ── SERVER RACK ── */
+.rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:7px;}
+.rack-unit{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:9px 12px;display:flex;align-items:center;gap:9px;transition:all .2s;}
+.rack-unit:hover{border-color:rgba(0,229,255,0.25);}
+.rack-led{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);flex-shrink:0;animation:pulse 2s infinite;}
+.rack-led.amber{background:var(--orange);box-shadow:0 0 6px var(--orange);}
+.rack-info{flex:1;min-width:0;}
+.rack-name{font-size:10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rack-type{font-size:7px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.rack-up{font-size:8px;font-family:'Orbitron',monospace;color:var(--green);white-space:nowrap;}
+.rack-up.amber{color:var(--orange);}
 
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border2);
-  }
-  .section-icon {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-  }
-  .section-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text3);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-  }
-  .section-count {
-    margin-left: auto;
-    font-size: 10px;
-    color: var(--text3);
-    background: var(--bg3);
-    padding: 2px 8px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-  }
+/* ── CONTRIBUTION ── */
+.contrib-area{padding:22px 36px;border-bottom:1px solid var(--border);}
+.contrib-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.contrib-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);}
+.contrib-count{font-size:8px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.contrib-grid{display:flex;gap:3px;flex-wrap:wrap;}
+.contrib-week{display:flex;flex-direction:column;gap:3px;}
+.contrib-day{width:11px;height:11px;border-radius:2px;background:rgba(0,229,255,0.04);transition:all .15s;cursor:default;}
+.contrib-day:hover{transform:scale(1.3);}
+.contrib-day.l1{background:rgba(0,229,255,0.15);}
+.contrib-day.l2{background:rgba(0,229,255,0.35);}
+.contrib-day.l3{background:rgba(0,229,255,0.6);}
+.contrib-day.l4{background:var(--cyan);box-shadow:0 0 4px var(--cyan);}
 
-  /* ─── EXPERIENCE CARDS ─── */
-  .exp-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 18px 20px;
-    margin-bottom: 14px;
-    position: relative;
-    transition: all 0.25s;
-    cursor: default;
-  }
-  .exp-card:hover { border-color: var(--blue); background: rgba(31, 111, 235, 0.05); }
-  .exp-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 16px; bottom: 16px;
-    width: 3px;
-    border-radius: 0 2px 2px 0;
-    background: var(--blue2);
-  }
-  .exp-card:nth-child(2)::before { background: var(--green2); }
+/* ── EDUCATION ── */
+.edu-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;display:flex;gap:15px;align-items:center;transition:all .25s;margin-bottom:20px;}
+.edu-card:hover{border-color:rgba(180,74,255,0.3);background:rgba(180,74,255,0.03);}
+.edu-icon{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,rgba(180,74,255,0.2),rgba(0,229,255,0.1));border:1px solid rgba(180,74,255,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.edu-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.edu-sub{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
 
-  .exp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 4px;
-    gap: 12px;
-  }
-  .exp-company {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .exp-badge {
-    font-size: 9px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    background: rgba(88, 166, 255, 0.15);
-    color: var(--blue);
-    border: 1px solid rgba(88, 166, 255, 0.3);
-    white-space: nowrap;
-    letter-spacing: 0.5px;
-  }
-  .exp-badge.current {
-    background: rgba(63, 185, 80, 0.15);
-    color: var(--green);
-    border-color: rgba(63, 185, 80, 0.3);
-  }
-  .exp-role {
-    font-size: 11px;
-    color: var(--blue);
-    margin-bottom: 4px;
-  }
-  .exp-dates {
-    font-size: 10px;
-    color: var(--text3);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .exp-dates::before { content: '📅'; font-size: 10px; }
-  .exp-bullets { list-style: none; }
-  .exp-bullets li {
-    font-size: 11px;
-    color: var(--text2);
-    padding: 2px 0 2px 14px;
-    position: relative;
-    line-height: 1.5;
-  }
-  .exp-bullets li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--green);
-    font-size: 9px;
-  }
+/* ── TERMINAL ── */
+.terminal{border-top:1px solid var(--border);background:var(--bg1);}
+.term-header{display:flex;align-items:center;gap:10px;padding:9px 18px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.term-dots{display:flex;gap:5px;}
+.term-dot{width:10px;height:10px;border-radius:50%;}
+.term-title{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);margin-left:4px;}
+.term-title span{color:var(--cyan);}
+.term-body{padding:18px 22px;font-size:11px;font-family:'JetBrains Mono',monospace;line-height:1.9;}
+.t-prompt{color:var(--cyan);}
+.t-at{color:var(--purple);}
+.t-cmd{color:var(--text);}
+.t-flag{color:var(--orange);}
+.t-out{color:var(--text2);padding-left:18px;display:block;}
+.t-ok{color:var(--green);}
+.t-info{color:var(--cyan);}
+.t-cursor{display:inline-block;width:7px;height:13px;background:var(--cyan);vertical-align:middle;animation:blink 1s step-end infinite;box-shadow:0 0 8px var(--cyan);}
+@keyframes blink{50%{opacity:0}}
 
-  /* ─── SKILLS GRID ─── */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .skill-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .skill-label {
-    font-size: 10px;
-    color: var(--text3);
-    width: 70px;
-    flex-shrink: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    flex: 1;
-  }
-  .skill-tag {
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    border: 1px solid var(--border);
-    color: var(--text2);
-    background: var(--bg2);
-    transition: all 0.2s;
-    cursor: default;
-  }
-  .skill-tag:hover { border-color: var(--purple); color: var(--purple); }
-  .skill-tag.primary {
-    border-color: rgba(88, 166, 255, 0.4);
-    color: var(--blue);
-    background: rgba(88, 166, 255, 0.1);
-  }
-  .skill-tag.accent {
-    border-color: rgba(188, 140, 255, 0.4);
-    color: var(--purple);
-    background: rgba(188, 140, 255, 0.1);
-  }
+/* ── STATUS BAR ── */
+.statusbar{position:sticky;bottom:0;z-index:150;background:rgba(0,30,45,0.96);backdrop-filter:blur(10px);border-top:1px solid var(--border2);display:flex;align-items:center;padding:0 20px;height:26px;font-size:9px;font-family:'JetBrains Mono',monospace;}
+.sb-left,.sb-right{display:flex;align-items:center;}
+.sb-right{margin-left:auto;}
+.sb-seg{padding:0 12px;height:26px;display:flex;align-items:center;gap:5px;color:rgba(0,229,255,0.7);border-right:1px solid var(--border);cursor:default;transition:background .2s;}
+.sb-seg:hover{background:rgba(0,229,255,0.07);color:var(--cyan);}
+.sb-seg.accent{color:var(--green);}
+.sb-seg .led{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);animation:pulse 1.5s infinite;}
 
-  /* ─── PROJECT CARDS ─── */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-  }
-  .project-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    transition: all 0.25s;
-    cursor: default;
-    position: relative;
-    overflow: hidden;
-  }
-  .project-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--blue2), var(--purple));
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .project-card:hover { border-color: var(--blue); transform: translateY(-2px); }
-  .project-card:hover::after { opacity: 1; }
+/* ── MOBILE ── */
+@media(max-width:960px){.sidebar{display:none;}.content-grid{grid-template-columns:1fr;}.panel{border-right:none;}.stats-row{grid-template-columns:repeat(2,1fr);}.plugin-grid{grid-template-columns:1fr;}.hero{padding:32px 24px;}.panel{padding:24px;}}
+@media(max-width:600px){.topbar-url,.topbar-tabs{display:none;}.stats-row{grid-template-columns:repeat(2,1fr);}.projects-grid{grid-template-columns:1fr;}.hero{padding:22px 16px;}.panel{padding:18px 14px;}.rack{grid-template-columns:1fr 1fr;}.statusbar .sb-right{display:none;}}
 
-  .project-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .project-icon {
-    width: 30px; height: 30px;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .project-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .project-meta {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .project-lang {
-    font-size: 9px;
-    color: var(--orange);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .project-lang::before {
-    content: '';
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--orange);
-  }
-  .project-days {
-    font-size: 9px;
-    color: var(--text3);
-  }
-  .project-team {
-    font-size: 9px;
-    color: var(--text3);
-    margin-left: auto;
-  }
-  .project-desc {
-    font-size: 10px;
-    color: var(--text2);
-    line-height: 1.6;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* ─── PLUGINS SECTION ─── */
-  .plugin-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .plugin-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    transition: all 0.25s;
-    text-decoration: none;
-  }
-  .plugin-card:hover { border-color: var(--green); background: rgba(63, 185, 80, 0.05); }
-  .plugin-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 4px;
-    font-family: 'Syne', sans-serif;
-  }
-  .plugin-url {
-    font-size: 10px;
-    color: var(--green);
-    word-break: break-all;
-  }
-  .plugin-badge {
-    display: inline-block;
-    font-size: 9px;
-    margin-top: 6px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    background: rgba(63, 185, 80, 0.15);
-    border: 1px solid rgba(63, 185, 80, 0.3);
-    color: var(--green);
-  }
-
-  /* ─── CONTRIBUTION GRAPH ─── */
-  .contrib-section {
-    padding: 24px 32px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-  }
-  .contrib-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .contrib-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text2);
-  }
-  .contrib-count {
-    font-size: 11px;
-    color: var(--text3);
-  }
-  .contrib-grid {
-    display: flex;
-    gap: 3px;
-    flex-wrap: wrap;
-  }
-  .contrib-week {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .contrib-day {
-    width: 11px; height: 11px;
-    border-radius: 2px;
-    background: var(--bg3);
-    transition: all 0.2s;
-    cursor: default;
-  }
-  .contrib-day:hover { transform: scale(1.2); }
-  .contrib-day.l1 { background: #0e4429; }
-  .contrib-day.l2 { background: #006d32; }
-  .contrib-day.l3 { background: #26a641; }
-  .contrib-day.l4 { background: #39d353; }
-
-  /* ─── STATUS BAR ─── */
-  .status-bar {
-    position: sticky;
-    bottom: 0;
-    background: var(--blue2);
-    display: flex;
-    align-items: center;
-    padding: 4px 16px;
-    gap: 16px;
-    font-size: 10px;
-    color: rgba(255,255,255,0.8);
-    z-index: 50;
-  }
-  .status-left, .status-right { display: flex; gap: 16px; align-items: center; }
-  .status-right { margin-left: auto; }
-  .status-item-bar { display: flex; align-items: center; gap: 4px; cursor: pointer; }
-  .status-item-bar:hover { color: #fff; }
-
-  /* ─── TERMINAL SECTION ─── */
-  .terminal-section {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    padding: 0;
-  }
-  .terminal-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: var(--bg3);
-    border-bottom: 1px solid var(--border);
-  }
-  .terminal-dots { display: flex; gap: 5px; }
-  .terminal-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-  }
-  .terminal-title {
-    font-size: 11px;
-    color: var(--text3);
-    margin-left: 4px;
-  }
-  .terminal-body {
-    padding: 16px 20px;
-    font-size: 11px;
-    line-height: 1.8;
-    min-height: 120px;
-  }
-  .t-prompt { color: var(--green); }
-  .t-cmd { color: var(--text); }
-  .t-output { color: var(--text2); padding-left: 16px; display: block; }
-  .t-success { color: var(--green); }
-  .t-info { color: var(--blue); }
-  .t-cursor {
-    display: inline-block;
-    width: 8px; height: 13px;
-    background: var(--text);
-    vertical-align: middle;
-    animation: blink 1s step-end infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  /* ─── SERVER RACK ─── */
-  .server-section {
-    padding: 32px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .server-rack {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-  }
-  .server-unit {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.2s;
-  }
-  .server-unit:hover { border-color: var(--green); }
-  .server-led {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
-    animation: pulse 2s infinite;
-  }
-  .server-led.amber { background: var(--orange); }
-  .server-info { flex: 1; min-width: 0; }
-  .server-name {
-    font-size: 11px;
-    color: var(--text);
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .server-type { font-size: 9px; color: var(--text3); }
-  .server-uptime {
-    font-size: 9px;
-    color: var(--green);
-    margin-left: auto;
-    white-space: nowrap;
-  }
-
-  /* ─── EDUCATION ─── */
-  .edu-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 18px 20px;
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
-  .edu-icon {
-    width: 44px; height: 44px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--blue2), var(--purple));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .edu-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
-  .edu-sub { font-size: 11px; color: var(--text3); }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .fade-in { animation: fadeInUp 0.5s ease forwards; }
-
-  section { animation: fadeInUp 0.5s ease forwards; }
-
-  /* ─── MOBILE RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    .sidebar { display: none; }
-    .sections-grid { grid-template-columns: 1fr; }
-    .section-panel { border-right: none; }
-    .section-panel:nth-child(even) { border-right: none; }
-    .stats-bar { grid-template-columns: repeat(2, 1fr); }
-    .plugin-cards { grid-template-columns: 1fr; }
-    .cv-hero-grid { grid-template-columns: 1fr; }
-    .avatar-box { display: none; }
-    .browser-tabs { display: none; }
-  }
-  @media (max-width: 600px) {
-    .code-area { padding: 16px; font-size: 12px; }
-    .cv-hero { padding: 24px 20px; }
-    .section-panel { padding: 20px; }
-    .stats-bar { grid-template-columns: repeat(2, 1fr); }
-    .stat-num { font-size: 20px; }
-    .projects-grid { grid-template-columns: 1fr; }
-    .browser-bar { display: none; }
-    .status-right { display: none; }
-    .editor-tab { padding: 6px 10px; font-size: 10px; }
-    .server-rack { grid-template-columns: 1fr 1fr; }
-  }
-
-  /* scrollbar */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg2); }
-  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(0,229,255,0.2);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,229,255,0.4);}
 </style>
 </head>
 <body>
 
-<!-- BROWSER CHROME -->
-<div class="browser-chrome">
-  <div class="browser-titlebar">
-    <div class="browser-dots">
-      <div class="dot red"></div>
-      <div class="dot yellow"></div>
-      <div class="dot green"></div>
-    </div>
-    <div class="browser-tabs">
-      <div class="tab active"><span class="tab-icon">📄</span> divyesh-cv.php</div>
-      <div class="tab"><span class="tab-icon">🎨</span> portfolio.css</div>
-      <div class="tab"><span class="tab-icon">⚙️</span> wp-config.php</div>
-      <div class="tab"><span class="tab-icon">🔧</span> functions.php</div>
-    </div>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">DEV<span>./</span>CV</div>
+  <div class="topbar-tabs">
+    <div class="ttab active"><span class="ttab-dot" style="background:#7c7cb5"></span>divyesh-cv.php</div>
+    <div class="ttab"><span class="ttab-dot" style="background:#f1e05a"></span>skills.js</div>
+    <div class="ttab"><span class="ttab-dot" style="background:#e3b341"></span>projects.json</div>
+    <div class="ttab"><span class="ttab-dot" style="background:#39d353"></span>wp-config.php</div>
   </div>
-  <div class="browser-bar">
-    <button class="nav-btn">←</button>
-    <button class="nav-btn">→</button>
-    <button class="nav-btn">↻</button>
-    <div class="url-bar">
-      <span class="url-lock">🔒</span>
-      <span class="url-text"><span>divyesh.dev</span>/cv/sr-wordpress-developer</span>
-    </div>
-    <button class="nav-btn">⋮</button>
+  <div class="topbar-url">
+    <span class="lock">🔒</span>
+    <span><span class="url-domain">divyesh.dev</span>/cv/sr-wordpress-developer</span>
+  </div>
+  <div class="topbar-actions">
+    <button class="topbar-btn">←</button>
+    <button class="topbar-btn">→</button>
+    <button class="topbar-btn">↻</button>
   </div>
 </div>
 
-<!-- EDITOR LAYOUT -->
-<div class="editor-layout">
+<!-- LAYOUT -->
+<div class="layout">
 
-  <!-- SIDEBAR FILE TREE -->
+  <!-- ══ FUTURISTIC SIDEBAR ══ -->
   <div class="sidebar">
-    <div class="sidebar-header">Explorer</div>
-    <div class="file-tree">
-      <div class="tree-section">
-        <div class="tree-folder open"><span class="arrow">▶</span> 📁 divyesh-portfolio</div>
-        <a href="#about" class="tree-file active"><span class="file-dot dot-php"></span> about.php</a>
-        <a href="#experience" class="tree-file"><span class="file-dot dot-md"></span> experience.md</a>
-        <a href="#skills" class="tree-file"><span class="file-dot dot-js"></span> skills.js</a>
-        <a href="#projects" class="tree-file"><span class="file-dot dot-json"></span> projects.json</a>
-        <a href="#plugins" class="tree-file"><span class="file-dot dot-php"></span> plugins.php</a>
-        <a href="#education" class="tree-file"><span class="file-dot dot-md"></span> education.md</a>
+    <!-- Profile -->
+    <div class="sb-profile">
+      <div class="sb-avatar-wrap">
+        <div class="sb-avatar">DS</div>
+        <div>
+          <div class="sb-name">Divyesh J.<br>Sapariya</div>
+          <div class="sb-role">Sr. WP Developer</div>
+        </div>
       </div>
-      <div class="tree-section">
-        <div class="tree-folder open"><span class="arrow">▶</span> 📁 node_modules</div>
-        <div class="tree-file"><span class="file-dot dot-js"></span> wordpress-core</div>
-        <div class="tree-file"><span class="file-dot dot-css"></span> elementor</div>
-        <div class="tree-file"><span class="file-dot dot-js"></span> woocommerce</div>
-        <div class="tree-file"><span class="file-dot dot-py"></span> python-scraper</div>
-      </div>
-      <div class="tree-section">
-        <div class="tree-folder"><span class="arrow">▶</span> 📁 wp-content</div>
-        <div class="tree-folder"><span class="arrow">▶</span> 📁 themes</div>
-        <div class="tree-folder"><span class="arrow">▶</span> 📁 plugins</div>
+      <div class="sb-stats">
+        <div class="sb-stat"><span class="sb-stat-n">5+</span><span class="sb-stat-l">Years</span></div>
+        <div class="sb-stat"><span class="sb-stat-n">250+</span><span class="sb-stat-l">Sites</span></div>
+        <div class="sb-stat"><span class="sb-stat-n">2</span><span class="sb-stat-l">Plugins</span></div>
+        <div class="sb-stat"><span class="sb-stat-n">90+</span><span class="sb-stat-l">Speed</span></div>
       </div>
     </div>
-    <div class="sidebar-footer">
-      <div class="status-item"><span class="status-dot"></span> Available for projects</div>
-      <div class="status-item">📍 India</div>
-      <div class="status-item">🕐 UTC+5:30</div>
+
+    <!-- Nav -->
+    <nav class="sb-nav">
+      <div class="sb-sec-lbl">Navigation</div>
+      <a href="#about" class="sb-item active">
+        <div class="sb-item-icon">👤</div>
+        <div class="sb-item-body"><span class="sb-item-name">about.php</span><span class="sb-item-sub">Profile &amp; Contacts</span></div>
+        <span class="sb-badge b-cyan">OPEN</span>
+      </a>
+      <a href="#experience" class="sb-item">
+        <div class="sb-item-icon">💼</div>
+        <div class="sb-item-body"><span class="sb-item-name">experience.md</span><span class="sb-item-sub">2 Companies · 5Y+</span></div>
+        <span class="sb-badge b-cyan">5Y+</span>
+      </a>
+      <a href="#skills" class="sb-item">
+        <div class="sb-item-icon">⚡</div>
+        <div class="sb-item-body"><span class="sb-item-name">skills.js</span><span class="sb-item-sub">Tech Stack</span></div>
+      </a>
+      <a href="#projects" class="sb-item">
+        <div class="sb-item-icon">🚀</div>
+        <div class="sb-item-body"><span class="sb-item-name">projects.json</span><span class="sb-item-sub">Selected Work</span></div>
+        <span class="sb-badge b-purple">11</span>
+      </a>
+      <a href="#plugins" class="sb-item">
+        <div class="sb-item-icon">🔌</div>
+        <div class="sb-item-body"><span class="sb-item-name">plugins.php</span><span class="sb-item-sub">wordpress.org</span></div>
+        <span class="sb-badge b-green">LIVE</span>
+      </a>
+      <a href="#education" class="sb-item">
+        <div class="sb-item-icon">🎓</div>
+        <div class="sb-item-body"><span class="sb-item-name">education.md</span><span class="sb-item-sub">BCA · CS</span></div>
+      </a>
+
+      <div class="sb-sec-lbl" style="margin-top:8px">Git</div>
+      <div class="sb-item">
+        <div class="sb-item-icon" style="font-size:11px">⎇</div>
+        <div class="sb-item-body"><span class="sb-item-name">main</span><span class="sb-item-sub">production branch</span></div>
+        <span class="sb-badge b-green">HEAD</span>
+      </div>
+      <div class="sb-item">
+        <div class="sb-item-icon" style="font-size:11px">⎇</div>
+        <div class="sb-item-body"><span class="sb-item-name">feature/react-js</span><span class="sb-item-sub">in progress</span></div>
+        <span class="sb-badge b-orange">WIP</span>
+      </div>
+      <div class="sb-item">
+        <div class="sb-item-icon" style="font-size:11px">⎇</div>
+        <div class="sb-item-body"><span class="sb-item-name">feature/node-js</span><span class="sb-item-sub">in progress</span></div>
+        <span class="sb-badge b-orange">WIP</span>
+      </div>
+    </nav>
+
+    <!-- Footer -->
+    <div class="sb-footer">
+      <div class="sb-footer-lbl">Core Stack</div>
+      <div class="sb-pills">
+        <span class="sb-pill">PHP</span><span class="sb-pill">WordPress</span><span class="sb-pill">WooCommerce</span><span class="sb-pill">MySQL</span><span class="sb-pill">Elementor</span><span class="sb-pill">JS</span><span class="sb-pill">jQuery</span><span class="sb-pill">Python</span><span class="sb-pill">React</span><span class="sb-pill">Node</span>
+      </div>
+      <div class="sb-online"><div class="sb-online-dot"></div>Available · India · UTC+5:30</div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT AREA -->
-  <div class="main-content">
+  <!-- ══ MAIN CONTENT ══ -->
+  <div class="main">
+    <div class="main-inner">
 
-    <!-- EDITOR TABS -->
-    <div class="editor-tabs">
-      <div class="editor-tab active"><span class="file-dot dot-php" style="margin-right:4px"></span> divyesh-cv.php <span class="tab-close">×</span></div>
-      <div class="editor-tab"><span class="file-dot dot-md" style="margin-right:4px"></span> README.md <span class="tab-close">×</span></div>
-      <div class="editor-tab"><span class="file-dot dot-json" style="margin-right:4px"></span> package.json <span class="tab-close">×</span></div>
-    </div>
-
-    <div class="code-content">
-      <div style="flex:1; overflow-y:auto;">
-
-        <!-- ─── HERO ─── -->
-        <section id="about">
-          <div class="cv-hero">
-            <div class="cv-hero-grid">
-              <div>
-                <div class="cv-name">Divyesh J. Sapariya</div>
-                <div class="cv-role">Sr. WordPress Developer &amp; Full Stack</div>
-                <div class="cv-tagline">
-                  5+ years crafting high-performance WordPress &amp; WooCommerce solutions. 
-                  From plugin development to team leadership — turning complex requirements 
-                  into elegant, scalable web experiences.
-                </div>
-                <div class="cv-contacts">
-                  <a href="tel:+919537023522" class="contact-pill"><span class="icon">📞</span> +91 95370 23522</a>
-                  <a href="mailto:divyeshsapariya35@gmail.com" class="contact-pill"><span class="icon">✉️</span> divyeshsapariya35@gmail.com</a>
-                  <a href="https://in.linkedin.com/in/sapariya-divyesh-222875192" class="contact-pill" target="_blank"><span class="icon">🔗</span> LinkedIn</a>
-                  <a class="contact-pill"><span class="icon">📍</span> India</a>
-                </div>
-              </div>
-              <div class="avatar-box">
-                <div class="avatar-ring">
-                  <div class="avatar-inner">DS</div>
-                </div>
-                <div class="avatar-badge"></div>
-              </div>
-            </div>
+      <!-- HERO -->
+      <section id="about">
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-tag">Senior WordPress Developer &amp; Full Stack Engineer</div>
+          <div class="hero-name">
+            <span class="n1">Divyesh J. </span><span class="n2">Sapariya</span>
           </div>
-
-          <!-- STATS BAR -->
-          <div class="stats-bar">
-            <div class="stat-cell">
-              <span class="stat-num">5+</span>
-              <span class="stat-label">Years Experience</span>
-            </div>
-            <div class="stat-cell">
-              <span class="stat-num">250+</span>
-              <span class="stat-label">Websites Built</span>
-            </div>
-            <div class="stat-cell">
-              <span class="stat-num">2</span>
-              <span class="stat-label">WP Plugins Published</span>
-            </div>
-            <div class="stat-cell">
-              <span class="stat-num">∞</span>
-              <span class="stat-label">Lines of PHP</span>
-            </div>
+          <div class="hero-role">
+            <span class="br">&lt;</span><span class="kw">function</span>
+            <span style="color:#cde8f0">buildAwesomeThings</span>
+            <span class="br">(</span><span class="str">"WordPress"</span>,
+            <span class="str">"WooCommerce"</span>,<span class="str">"PHP"</span>
+            <span class="br">) /&gt;</span>
           </div>
-        </section>
-
-        <!-- ─── CONTRIBUTION GRAPH ─── -->
-        <div class="contrib-section">
-          <div class="contrib-header">
-            <span class="contrib-title">// contribution_activity.log</span>
-            <span class="contrib-count">250+ websites across 5 years</span>
+          <div class="hero-bio">
+            5+ years crafting high-performance WordPress &amp; WooCommerce solutions.
+            From custom plugin &amp; theme development to team leadership — turning complex
+            requirements into elegant, optimised web experiences. 250+ sites shipped.
           </div>
-          <div class="contrib-grid" id="contribGrid"></div>
+          <div class="hero-contacts">
+            <a href="tel:+919537023522" class="contact-chip">📞 +91 95370 23522</a>
+            <a href="mailto:divyeshsapariya35@gmail.com" class="contact-chip">✉️ divyeshsapariya35@gmail.com</a>
+            <a href="https://in.linkedin.com/in/sapariya-divyesh-222875192" target="_blank" class="contact-chip">🔗 LinkedIn</a>
+            <span class="contact-chip">📍 India, UTC+5:30</span>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box"><span class="stat-n">5<span style="font-size:18px;color:var(--cyan2)">+</span></span><span class="stat-l">Years Experience</span></div>
+          <div class="stat-box"><span class="stat-n">250<span style="font-size:18px;color:var(--cyan2)">+</span></span><span class="stat-l">Websites Built</span></div>
+          <div class="stat-box"><span class="stat-n">2</span><span class="stat-l">WP Plugins Published</span></div>
+          <div class="stat-box"><span class="stat-n" style="color:var(--green)">90<span style="font-size:18px">+</span></span><span class="stat-l">Page Speed Score</span></div>
+        </div>
+      </section>
+
+      <!-- CONTRIB GRAPH -->
+      <div class="contrib-area">
+        <div class="contrib-hd">
+          <span class="contrib-title">// git_contributions.log — 250+ sites across 5 years</span>
+          <span class="contrib-count">★ activity map</span>
+        </div>
+        <div class="contrib-grid" id="contribGrid"></div>
+      </div>
+
+      <!-- CONTENT GRID -->
+      <div class="content-grid">
+
+        <!-- EXPERIENCE -->
+        <div class="panel full" id="experience">
+          <div class="section-hd">
+            <div class="section-hd-icon">💼</div>
+            <span class="section-hd-label">Work Experience</span>
+            <span class="section-hd-count">2 companies</span>
+            <div class="section-hd-line"></div>
+          </div>
+          <div class="exp-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+              <div class="exp-co">Crest Infosystems Pvt. Ltd.</div>
+              <span class="exp-badge eb-cur">● CURRENT</span>
+            </div>
+            <div class="exp-role">// Senior Software Engineer · WordPress Lead</div>
+            <div class="exp-dates">Jan 2023 — Present · 2+ years</div>
+            <ul class="exp-ul">
+              <li>Leading the WordPress development team; conducting technical interviews</li>
+              <li>Developing custom Elementor Add-on Plugins per client specifications</li>
+              <li>Managing multiple projects for optimal traffic &amp; Google Search ranking</li>
+              <li>Redesigned sites from Figma mockups — NG Yachting, Cyberwhyze</li>
+              <li>Improved page speed scores from 30 → 90+ (Cox Planning Solution)</li>
+              <li>Passed Web Core Vitals on legacy CodeIgniter/Java stack (NG Yachting)</li>
+              <li>Actively learning ReactJS and NodeJS for modern full-stack development</li>
+            </ul>
+          </div>
+          <div class="exp-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+              <div class="exp-co">CoderKube Technologies</div>
+              <span class="exp-badge eb-old">Jul 2020 – Dec 2022</span>
+            </div>
+            <div class="exp-role">// Trainee → Lead Software Engineer</div>
+            <div class="exp-dates">Jul 2020 — Dec 2022 · 2.5 years</div>
+            <ul class="exp-ul">
+              <li>Grew from Trainee to Lead Software Engineer in 2.5 years</li>
+              <li>Delivered 250+ websites: custom themes, plugins, WooCommerce, APIs</li>
+              <li>Developed custom Gutenberg &amp; Elementor Add-on Plugins</li>
+              <li>Team leadership: task assignment, progress tracking &amp; mentoring</li>
+              <li>Python web scraper with IP rotation, pagination, CSV data pipelines</li>
+              <li>ReactJS frontend with WordPress REST API as backend</li>
+              <li>ACF custom themes, Cron jobs, XML/CSV import-update-delete pipelines</li>
+            </ul>
+          </div>
         </div>
 
-        <!-- ─── MAIN SECTIONS GRID ─── -->
-        <div class="sections-grid">
-
-          <!-- EXPERIENCE -->
-          <div class="section-panel full-width" id="experience">
-            <div class="section-title">
-              <div class="section-icon">💼</div>
-              <span class="section-label">Work Experience</span>
-              <span class="section-count">2 companies</span>
-            </div>
-
-            <div class="exp-card">
-              <div class="exp-header">
-                <div>
-                  <div class="exp-company">Crest Infosystems Pvt. Ltd.</div>
-                  <div class="exp-role">function seniorWordPressDeveloper() {</div>
-                </div>
-                <div class="exp-badge current">● CURRENT</div>
-              </div>
-              <div class="exp-dates">Jan 2023 — Present</div>
-              <ul class="exp-bullets">
-                <li>Senior Software Engineer leading WordPress development team</li>
-                <li>Developed custom Elementor Add-on Plugins per client requirements</li>
-                <li>Improved client sites for optimal traffic &amp; Google Search ranking</li>
-                <li>Conducting technical interviews and onboarding new developers</li>
-                <li>Learning ReactJS and NodeJS for modern full-stack development</li>
-                <li>Redesigned sites based on Figma designs (NG Yachting, Cyberwhyze)</li>
-                <li>Improved site speed scores from 30 → 90+ (Cox Planning Solution)</li>
-                <li>Passed Web Core Vitals on legacy CodeIgniter/Java project (NG Yachting)</li>
-              </ul>
-            </div>
-
-            <div class="exp-card">
-              <div class="exp-header">
-                <div>
-                  <div class="exp-company">CoderKube Technologies</div>
-                  <div class="exp-role">function leadSoftwareEngineer() {</div>
-                </div>
-                <div class="exp-badge">Jul 2020 — Dec 2022</div>
-              </div>
-              <div class="exp-dates">Jul 2020 — Dec 2022 · 2.5 years</div>
-              <ul class="exp-bullets">
-                <li>Started as Trainee → promoted to Lead Software Engineer</li>
-                <li>Team leadership, task assignment &amp; progress tracking across 250+ websites</li>
-                <li>Plugin &amp; Theme development, API integrations, WooCommerce solutions</li>
-                <li>Developed custom Add-on Plugins for Gutenberg and Elementor</li>
-                <li>Managing technical interviews and mentoring team members</li>
-                <li>Project requirement analysis, time estimation &amp; delivery management</li>
-                <li>Python-based web scraping with IP rotation &amp; CSV data pipelines</li>
-                <li>ReactJS frontend with WordPress as REST API backend</li>
-              </ul>
-            </div>
+        <!-- SKILLS -->
+        <div class="panel" id="skills">
+          <div class="section-hd">
+            <div class="section-hd-icon">⚡</div>
+            <span class="section-hd-label">Tech Stack</span>
+            <div class="section-hd-line"></div>
           </div>
-
-          <!-- SKILLS -->
-          <div class="section-panel" id="skills">
-            <div class="section-title">
-              <div class="section-icon">⚡</div>
-              <span class="section-label">Tech Stack</span>
-            </div>
-            <div class="skills-grid">
-              <div class="skill-row">
-                <span class="skill-label">Backend</span>
-                <div class="skill-tags">
-                  <span class="skill-tag primary">PHP</span>
-                  <span class="skill-tag primary">WordPress</span>
-                  <span class="skill-tag primary">WooCommerce</span>
-                  <span class="skill-tag">MySQL</span>
-                  <span class="skill-tag">REST API</span>
-                  <span class="skill-tag">CodeIgniter</span>
-                </div>
-              </div>
-              <div class="skill-row">
-                <span class="skill-label">Frontend</span>
-                <div class="skill-tags">
-                  <span class="skill-tag primary">HTML5</span>
-                  <span class="skill-tag primary">CSS3</span>
-                  <span class="skill-tag primary">JavaScript</span>
-                  <span class="skill-tag primary">jQuery</span>
-                  <span class="skill-tag">Ajax</span>
-                  <span class="skill-tag">Bootstrap</span>
-                  <span class="skill-tag">JSON</span>
-                </div>
-              </div>
-              <div class="skill-row">
-                <span class="skill-label">Page Build</span>
-                <div class="skill-tags">
-                  <span class="skill-tag accent">Elementor</span>
-                  <span class="skill-tag accent">Divi</span>
-                  <span class="skill-tag accent">Gutenberg</span>
-                  <span class="skill-tag accent">WP Bakery</span>
-                </div>
-              </div>
-              <div class="skill-row">
-                <span class="skill-label">WP Plugins</span>
-                <div class="skill-tags">
-                  <span class="skill-tag">ACF</span>
-                  <span class="skill-tag">Dokan</span>
-                  <span class="skill-tag">LearnDash</span>
-                  <span class="skill-tag">LearnPress</span>
-                  <span class="skill-tag">WPML</span>
-                  <span class="skill-tag">Gravity Forms</span>
-                  <span class="skill-tag">MemberPress</span>
-                  <span class="skill-tag">WP Forms</span>
-                  <span class="skill-tag">CF7</span>
-                  <span class="skill-tag">Mailchimp</span>
-                  <span class="skill-tag">OptimizePress</span>
-                  <span class="skill-tag">RevSlider</span>
-                </div>
-              </div>
-              <div class="skill-row">
-                <span class="skill-label">Others</span>
-                <div class="skill-tags">
-                  <span class="skill-tag">ReactJS</span>
-                  <span class="skill-tag">NodeJS</span>
-                  <span class="skill-tag">Python</span>
-                  <span class="skill-tag">Git</span>
-                  <span class="skill-tag">Figma</span>
-                  <span class="skill-tag">SEO</span>
-                  <span class="skill-tag">Core Web Vitals</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- EDUCATION + PLUGINS -->
-          <div class="section-panel" id="education">
-            <div class="section-title">
-              <div class="section-icon">🎓</div>
-              <span class="section-label">Education</span>
-            </div>
-            <div class="edu-card">
-              <div class="edu-icon">🎓</div>
-              <div>
-                <div class="edu-title">Bachelor of Computer Applications</div>
-                <div class="edu-sub">BCA · Computer Science</div>
-              </div>
-            </div>
-
-            <div class="section-title" style="margin-top:24px" id="plugins">
-              <div class="section-icon">🔌</div>
-              <span class="section-label">Published WP Plugins</span>
-              <span class="section-count">wordpress.org</span>
-            </div>
-            <div class="plugin-cards">
-              <a href="https://wordpress.org/plugins/remove-cart-products/" class="plugin-card" target="_blank">
-                <div class="plugin-name">Remove Cart Products</div>
-                <div class="plugin-url">wordpress.org/plugins/remove-cart-products/</div>
-                <span class="plugin-badge">● Live</span>
-              </a>
-              <a href="https://wordpress.org/plugins/user-wise-email-disable/" class="plugin-card" target="_blank">
-                <div class="plugin-name">User Wise Email Disable</div>
-                <div class="plugin-url">wordpress.org/plugins/user-wise-email-disable/</div>
-                <span class="plugin-badge">● Live</span>
-              </a>
-            </div>
-
-            <!-- SERVER RACK -->
-            <div class="section-title" style="margin-top:24px">
-              <div class="section-icon">🖥️</div>
-              <span class="section-label">Services Online</span>
-            </div>
-            <div class="server-rack">
-              <div class="server-unit">
-                <div class="server-led"></div>
-                <div class="server-info">
-                  <div class="server-name">WordPress Core</div>
-                  <div class="server-type">CMS Engine</div>
-                </div>
-                <span class="server-uptime">5y+</span>
-              </div>
-              <div class="server-unit">
-                <div class="server-led"></div>
-                <div class="server-info">
-                  <div class="server-name">WooCommerce</div>
-                  <div class="server-type">E-Commerce</div>
-                </div>
-                <span class="server-uptime">5y+</span>
-              </div>
-              <div class="server-unit">
-                <div class="server-led amber"></div>
-                <div class="server-info">
-                  <div class="server-name">ReactJS</div>
-                  <div class="server-type">Frontend Framework</div>
-                </div>
-                <span class="server-uptime" style="color:var(--orange)">Learning</span>
-              </div>
-              <div class="server-unit">
-                <div class="server-led amber"></div>
-                <div class="server-info">
-                  <div class="server-name">NodeJS</div>
-                  <div class="server-type">Runtime</div>
-                </div>
-                <span class="server-uptime" style="color:var(--orange)">Learning</span>
-              </div>
-              <div class="server-unit">
-                <div class="server-led"></div>
-                <div class="server-info">
-                  <div class="server-name">MySQL</div>
-                  <div class="server-type">Database</div>
-                </div>
-                <span class="server-uptime">5y+</span>
-              </div>
-              <div class="server-unit">
-                <div class="server-led"></div>
-                <div class="server-info">
-                  <div class="server-name">Python Scraper</div>
-                  <div class="server-type">Data Pipeline</div>
-                </div>
-                <span class="server-uptime">Active</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- PROJECTS -->
-          <div class="section-panel full-width" id="projects">
-            <div class="section-title">
-              <div class="section-icon">🚀</div>
-              <span class="section-label">Selected Projects</span>
-              <span class="section-count">11 projects</span>
-            </div>
-            <div class="projects-grid">
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">⛵</div>
-                  <div class="project-name">NG Yachting</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">PHP / CodeIgniter</span>
-                  <span class="project-days">Ongoing</span>
-                </div>
-                <div class="project-desc">Core PHP yacht listing platform. Integrated CodeIgniter & Java for API data. Redesigned UI, improved Core Web Vitals, Figma design suggestion.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🎓</div>
-                  <div class="project-name">Build Impossible</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / Divi LMS</span>
-                  <span class="project-days">1 Month</span>
-                  <span class="project-team">👥 2</span>
-                </div>
-                <div class="project-desc">LMS site with auto-progression on video completion. Restricted access per subscription. Multi-video player with seamless in-page navigation.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🏪</div>
-                  <div class="project-name">Made In Park City</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / Dokan</span>
-                  <span class="project-days">8 Days</span>
-                </div>
-                <div class="project-desc">Multi-vendor Dokan marketplace with custom product ordering. Overridden search showing products, vendors, categories in one page.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">📅</div>
-                  <div class="project-name">Dante Integration</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress Plugin</span>
-                  <span class="project-days">21 Days</span>
-                </div>
-                <div class="project-desc">Custom plugin with API key auth, CPT with shortcodes, custom calendar & booking, course/cart pages like WooCommerce, rewrite rules.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🎟️</div>
-                  <div class="project-name">Experience Activities</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress Plugin</span>
-                  <span class="project-days">18 Days</span>
-                </div>
-                <div class="project-desc">Custom booking plugin with API, custom calendar with cart & confirmation flow. Shortcode-based display with data ID parameters.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🎨</div>
-                  <div class="project-name">Rise Up Creatives</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress</span>
-                  <span class="project-days">12 Days</span>
-                  <span class="project-team">👥 2</span>
-                </div>
-                <div class="project-desc">Custom theme with banner API, MemberPress for subscription gating. Speed optimization and conditional content access control.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🗺️</div>
-                  <div class="project-name">Sayvale</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / ACF</span>
-                  <span class="project-days">3 Days</span>
-                </div>
-                <div class="project-desc">Custom theme with dynamic Google Maps. Click-driven list-to-map interaction with news listing and load-more. Speed optimized.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🧑‍⚕️</div>
-                  <div class="project-name">Patient Better</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / LearnPress</span>
-                  <span class="project-days">5 Days</span>
-                  <span class="project-team">👥 3</span>
-                </div>
-                <div class="project-desc">Updated legacy LP plugin, redesigned for improved UX, overridden templates. Astra theme with child theme customization.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🌐</div>
-                  <div class="project-name">Cyberwhyze</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / Elementor</span>
-                  <span class="project-days">Ongoing</span>
-                </div>
-                <div class="project-desc">Full Figma-to-Elementor build. SEO implementation, blog detail page improvements, speed optimization and design suggestions.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">📐</div>
-                  <div class="project-name">Cox Planning Solution</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / Elementor</span>
-                  <span class="project-days">Ongoing</span>
-                </div>
-                <div class="project-desc">Speed score improved from 30 → 90+. Full site redesign from provided design. Ongoing maintenance and optimization.</div>
-              </div>
-              <div class="project-card">
-                <div class="project-header">
-                  <div class="project-icon">🧹</div>
-                  <div class="project-name">Peters Cleaners</div>
-                </div>
-                <div class="project-meta">
-                  <span class="project-lang">WordPress / ACF</span>
-                  <span class="project-days">6 Days</span>
-                </div>
-                <div class="project-desc">Custom theme with ACF, location-based Google Map, blog with load-more. Full speed optimization pass.</div>
-              </div>
-            </div>
-          </div>
-
+          <div class="skill-group"><div class="skill-group-label">Backend</div><div class="skill-tags"><span class="skill-tag t-cyan">PHP</span><span class="skill-tag t-cyan">WordPress</span><span class="skill-tag t-cyan">WooCommerce</span><span class="skill-tag t-cyan">MySQL</span><span class="skill-tag">REST API</span><span class="skill-tag">CodeIgniter</span></div></div>
+          <div class="skill-group"><div class="skill-group-label">Frontend</div><div class="skill-tags"><span class="skill-tag t-green">HTML5</span><span class="skill-tag t-green">CSS3</span><span class="skill-tag t-green">JavaScript</span><span class="skill-tag t-green">jQuery</span><span class="skill-tag">Ajax</span><span class="skill-tag">Bootstrap</span><span class="skill-tag">JSON</span></div></div>
+          <div class="skill-group"><div class="skill-group-label">Page Builders</div><div class="skill-tags"><span class="skill-tag t-purple">Elementor</span><span class="skill-tag t-purple">Divi</span><span class="skill-tag t-purple">Gutenberg</span><span class="skill-tag t-purple">WP Bakery</span></div></div>
+          <div class="skill-group"><div class="skill-group-label">WP Plugins</div><div class="skill-tags"><span class="skill-tag">ACF</span><span class="skill-tag">Dokan</span><span class="skill-tag">LearnDash</span><span class="skill-tag">LearnPress</span><span class="skill-tag">WPML</span><span class="skill-tag">Gravity Forms</span><span class="skill-tag">MemberPress</span><span class="skill-tag">OptimizePress</span><span class="skill-tag">RevSlider</span><span class="skill-tag">WP Forms</span><span class="skill-tag">CF7</span><span class="skill-tag">Mailchimp</span></div></div>
+          <div class="skill-group"><div class="skill-group-label">Expanding</div><div class="skill-tags"><span class="skill-tag t-orange">ReactJS</span><span class="skill-tag t-orange">NodeJS</span><span class="skill-tag">Python</span><span class="skill-tag">Git</span><span class="skill-tag">Figma</span><span class="skill-tag">SEO</span><span class="skill-tag">Core Web Vitals</span></div></div>
         </div>
 
-        <!-- ─── TERMINAL ─── -->
-        <div class="terminal-section">
-          <div class="terminal-header">
-            <div class="terminal-dots">
-              <div class="terminal-dot" style="background:#ff5f57"></div>
-              <div class="terminal-dot" style="background:#febc2e"></div>
-              <div class="terminal-dot" style="background:#28c840"></div>
-            </div>
-            <span class="terminal-title">bash — divyesh@portfolio</span>
+        <!-- EDUCATION + SERVERS -->
+        <div class="panel" id="education">
+          <div class="section-hd">
+            <div class="section-hd-icon">🎓</div>
+            <span class="section-hd-label">Education</span>
+            <div class="section-hd-line"></div>
           </div>
-          <div class="terminal-body">
-            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cmd">whoami --verbose</span></div>
-            <span class="t-output t-info">→ Sr. WordPress Developer | Full Stack | Team Lead</span>
-            <br>
-            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cmd">git log --oneline experience</span></div>
-            <span class="t-output"><span class="t-success">a1b2c3d</span> feat: joined Crest Infosystems as Senior Developer (Jan 2023)</span>
-            <span class="t-output"><span class="t-success">e4f5g6h</span> feat: promoted to Lead Engineer at CoderKube (2021)</span>
-            <span class="t-output"><span class="t-success">i7j8k9l</span> init: joined CoderKube as Trainee WordPress Dev (Jul 2020)</span>
-            <br>
-            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cmd">npm run hire-me</span></div>
-            <span class="t-output t-success">✓ Contact: divyeshsapariya35@gmail.com</span>
-            <span class="t-output t-success">✓ Phone: +91 95370 23522</span>
-            <span class="t-output t-success">✓ Status: Open to opportunities</span>
-            <br>
-            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cursor"></span></div>
+          <div class="edu-card">
+            <div class="edu-icon">🎓</div>
+            <div><div class="edu-title">Bachelor of Computer Applications</div><div class="edu-sub">BCA · Computer Science &amp; Applications</div></div>
+          </div>
+          <div class="section-hd" style="margin-top:20px">
+            <div class="section-hd-icon">🖥️</div>
+            <span class="section-hd-label">Services Online</span>
+            <div class="section-hd-line"></div>
+          </div>
+          <div class="rack">
+            <div class="rack-unit"><div class="rack-led"></div><div class="rack-info"><div class="rack-name">WordPress Core</div><div class="rack-type">CMS Engine</div></div><span class="rack-up">5Y+</span></div>
+            <div class="rack-unit"><div class="rack-led"></div><div class="rack-info"><div class="rack-name">WooCommerce</div><div class="rack-type">E-Commerce</div></div><span class="rack-up">5Y+</span></div>
+            <div class="rack-unit"><div class="rack-led"></div><div class="rack-info"><div class="rack-name">PHP 8.x</div><div class="rack-type">Backend</div></div><span class="rack-up">ONLINE</span></div>
+            <div class="rack-unit"><div class="rack-led"></div><div class="rack-info"><div class="rack-name">MySQL</div><div class="rack-type">Database</div></div><span class="rack-up">ONLINE</span></div>
+            <div class="rack-unit"><div class="rack-led amber"></div><div class="rack-info"><div class="rack-name">ReactJS</div><div class="rack-type">Frontend FW</div></div><span class="rack-up amber">LEARNING</span></div>
+            <div class="rack-unit"><div class="rack-led amber"></div><div class="rack-info"><div class="rack-name">NodeJS</div><div class="rack-type">Runtime</div></div><span class="rack-up amber">LEARNING</span></div>
+            <div class="rack-unit"><div class="rack-led"></div><div class="rack-info"><div class="rack-name">Python Scraper</div><div class="rack-type">Data Pipeline</div></div><span class="rack-up">ACTIVE</span></div>
+            <div class="rack-unit"><div class="rack-led"></div><div class="rack-info"><div class="rack-name">Elementor</div><div class="rack-type">Page Builder</div></div><span class="rack-up">ONLINE</span></div>
+          </div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="panel full" id="projects">
+          <div class="section-hd">
+            <div class="section-hd-icon">🚀</div>
+            <span class="section-hd-label">Selected Projects</span>
+            <span class="section-hd-count">11 delivered</span>
+            <div class="section-hd-line"></div>
+          </div>
+          <div class="projects-grid">
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">⛵</div><div class="proj-name">NG Yachting</div></div><div class="proj-meta"><span class="proj-lang">PHP / CodeIgniter</span><span class="proj-days">Ongoing</span></div><div class="proj-desc">Core PHP yacht listing. CodeIgniter &amp; Java API integration. Redesigned UI, improved Core Web Vitals, authored Figma design.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🎓</div><div class="proj-name">Build Impossible</div></div><div class="proj-meta"><span class="proj-lang">WordPress / Divi LMS</span><span class="proj-days">1 Month</span></div><div class="proj-desc">LMS platform with auto-progression on video completion, subscription-gated access &amp; multi-video seamless in-page player.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🏪</div><div class="proj-name">Made In Park City</div></div><div class="proj-meta"><span class="proj-lang">WordPress / Dokan</span><span class="proj-days">8 Days</span></div><div class="proj-desc">Multi-vendor Dokan marketplace with custom product ordering. Overridden search: products, vendors, and categories unified.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">📅</div><div class="proj-name">Dante Integration</div></div><div class="proj-meta"><span class="proj-lang">WordPress Plugin</span><span class="proj-days">21 Days</span></div><div class="proj-desc">Custom plugin: API auth, CPT + shortcodes, custom calendar &amp; booking, WooCommerce-style course/cart pages, rewrite rules.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🎟️</div><div class="proj-name">Experience Activities</div></div><div class="proj-meta"><span class="proj-lang">WordPress Plugin</span><span class="proj-days">18 Days</span></div><div class="proj-desc">Booking plugin with API auth, custom calendar, cart + confirmation flow. Shortcode-based display with data ID parameters.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🎨</div><div class="proj-name">Rise Up Creatives</div></div><div class="proj-meta"><span class="proj-lang">WordPress</span><span class="proj-days">12 Days</span></div><div class="proj-desc">Custom theme with banner-creation API, MemberPress subscription gating, speed optimisation &amp; conditional content access.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🗺️</div><div class="proj-name">Sayvale</div></div><div class="proj-meta"><span class="proj-lang">WordPress / ACF</span><span class="proj-days">3 Days</span></div><div class="proj-desc">Dynamic Google Maps driven by ACF data. Click list → highlight pin. News listing with load-more. Speed optimised.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🧑‍⚕️</div><div class="proj-name">Patient Better</div></div><div class="proj-meta"><span class="proj-lang">WordPress / LearnPress</span><span class="proj-days">5 Days</span></div><div class="proj-desc">Upgraded legacy LP plugin, redesigned UX, overridden templates. Astra + child theme. Team of 3.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🌐</div><div class="proj-name">Cyberwhyze</div></div><div class="proj-meta"><span class="proj-lang">WordPress / Elementor</span><span class="proj-days">Ongoing</span></div><div class="proj-desc">Figma-to-Elementor pixel-perfect build. SEO implementation, blog page redesign, Core Web Vitals optimisation.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">📐</div><div class="proj-name">Cox Planning Solution</div></div><div class="proj-meta"><span class="proj-lang">WordPress / Elementor</span><span class="proj-days">Ongoing</span></div><div class="proj-desc">Speed score 30 → 90+. Full redesign from provided mockups. Ongoing maintenance &amp; performance monitoring.</div></div>
+            <div class="proj-card"><div class="proj-header"><div class="proj-icon">🧹</div><div class="proj-name">Peters Cleaners</div></div><div class="proj-meta"><span class="proj-lang">WordPress / ACF</span><span class="proj-days">6 Days</span></div><div class="proj-desc">Custom ACF theme, location-based Google Map, blog with load-more. Complete speed optimisation pass.</div></div>
+          </div>
+        </div>
+
+        <!-- PLUGINS -->
+        <div class="panel full" id="plugins">
+          <div class="section-hd">
+            <div class="section-hd-icon">🔌</div>
+            <span class="section-hd-label">Published WP Plugins</span>
+            <span class="section-hd-count">wordpress.org</span>
+            <div class="section-hd-line"></div>
+          </div>
+          <div class="plugin-grid">
+            <a href="https://wordpress.org/plugins/remove-cart-products/" class="plugin-card" target="_blank"><div class="plugin-name">Remove Cart Products</div><div class="plugin-url">wordpress.org/plugins/remove-cart-products/</div><div class="plugin-live">LIVE</div></a>
+            <a href="https://wordpress.org/plugins/user-wise-email-disable/" class="plugin-card" target="_blank"><div class="plugin-name">User Wise Email Disable</div><div class="plugin-url">wordpress.org/plugins/user-wise-email-disable/</div><div class="plugin-live">LIVE</div></a>
           </div>
         </div>
 
       </div>
-    </div>
 
+      <!-- TERMINAL -->
+      <div class="terminal">
+        <div class="term-header">
+          <div class="term-dots">
+            <div class="term-dot" style="background:#ff5f57"></div>
+            <div class="term-dot" style="background:#febc2e"></div>
+            <div class="term-dot" style="background:#28c840"></div>
+          </div>
+          <span class="term-title">bash — <span>divyesh</span>@portfolio ~ zsh</span>
+        </div>
+        <div class="term-body">
+          <div><span class="t-prompt">divyesh</span><span style="color:var(--text3)">@</span><span class="t-at">portfolio</span><span style="color:var(--text3)">:~$</span> <span class="t-cmd">whoami <span class="t-flag">--verbose</span></span></div>
+          <span class="t-out t-info">→ Divyesh J. Sapariya | Sr. WordPress Developer | Full Stack | Team Lead</span>
+          <br>
+          <div><span class="t-prompt">divyesh</span><span style="color:var(--text3)">@</span><span class="t-at">portfolio</span><span style="color:var(--text3)">:~$</span> <span class="t-cmd">git log <span class="t-flag">--oneline --graph</span></span></div>
+          <span class="t-out"><span class="t-ok">a1b2c3d</span> ● feat: Senior Developer at Crest Infosystems (Jan 2023 – present)</span>
+          <span class="t-out"><span class="t-ok">e4f5g6h</span> ● feat: promoted to Lead Engineer at CoderKube (2021)</span>
+          <span class="t-out"><span class="t-ok">i7j8k9l</span> ● feat: 250+ websites delivered, 2 plugins on wordpress.org</span>
+          <span class="t-out"><span class="t-ok">m1n2o3p</span> ● init: joined CoderKube as WordPress trainee (Jul 2020)</span>
+          <br>
+          <div><span class="t-prompt">divyesh</span><span style="color:var(--text3)">@</span><span class="t-at">portfolio</span><span style="color:var(--text3)">:~$</span> <span class="t-cmd">npm run <span class="t-flag">hire-me</span></span></div>
+          <span class="t-out t-ok">✓ Email   → divyeshsapariya35@gmail.com</span>
+          <span class="t-out t-ok">✓ Phone   → +91 95370 23522</span>
+          <span class="t-out t-ok">✓ Status  → Open to opportunities</span>
+          <br>
+          <div><span class="t-prompt">divyesh</span><span style="color:var(--text3)">@</span><span class="t-at">portfolio</span><span style="color:var(--text3)">:~$</span> <span class="t-cursor"></span></div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <!-- STATUS BAR -->
-<div class="status-bar">
-  <div class="status-left">
-    <span class="status-item-bar">⎇ main</span>
-    <span class="status-item-bar">✓ 0 errors</span>
-    <span class="status-item-bar">⚡ WordPress Expert</span>
+<div class="statusbar">
+  <div class="sb-left">
+    <div class="sb-seg"><span class="led"></span>&nbsp;main</div>
+    <div class="sb-seg">⎇ PHP 8.2</div>
+    <div class="sb-seg">✓ 0 errors</div>
+    <div class="sb-seg accent">⚡ WP Expert</div>
   </div>
-  <div class="status-right">
-    <span class="status-item-bar">PHP 8.2</span>
-    <span class="status-item-bar">UTF-8</span>
-    <span class="status-item-bar">🇮🇳 India</span>
-    <span class="status-item-bar">5+ yrs experience</span>
+  <div class="sb-right">
+    <div class="sb-seg">JetBrains Mono</div>
+    <div class="sb-seg">UTF-8</div>
+    <div class="sb-seg">🇮🇳 India</div>
+    <div class="sb-seg">5+ yrs</div>
   </div>
 </div>
 
 <script>
-  // Generate contribution graph
-  const grid = document.getElementById('contribGrid');
-  const levels = [0,0,0,1,1,2,2,2,3,3,4];
-  for(let w = 0; w < 52; w++) {
-    const week = document.createElement('div');
-    week.className = 'contrib-week';
-    for(let d = 0; d < 7; d++) {
-      const day = document.createElement('div');
-      const lvl = levels[Math.floor(Math.random() * levels.length)];
-      day.className = `contrib-day${lvl > 0 ? ' l'+lvl : ''}`;
-      day.title = `${lvl === 0 ? 'No' : lvl === 1 ? '1-3' : lvl === 2 ? '4-6' : lvl === 3 ? '7-9' : '10+'} contributions`;
-      week.appendChild(day);
-    }
-    grid.appendChild(week);
-  }
+// Contribution graph
+const grid=document.getElementById('contribGrid');
+const lvls=[0,0,1,1,1,2,2,2,3,3,4];
+for(let w=0;w<52;w++){const wk=document.createElement('div');wk.className='contrib-week';for(let d=0;d<7;d++){const day=document.createElement('div');const l=lvls[Math.floor(Math.random()*lvls.length)];day.className='contrib-day'+(l>0?' l'+l:'');wk.appendChild(day);}grid.appendChild(wk);}
 
-  // Smooth scroll for file tree links
-  document.querySelectorAll('.tree-file[href]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      document.querySelectorAll('.tree-file').forEach(f => f.classList.remove('active'));
-      link.classList.add('active');
-    });
-  });
-
-  // Typing effect in terminal
-  const cmds = ['php artisan inspire', 'wp plugin list --status=active', 'git status'];
-  let cmdIdx = 0;
-  const cursor = document.querySelector('.t-cursor');
-  setInterval(() => {
-    // Just blink the cursor — typing already shown statically
-  }, 500);
+// Sidebar scroll spy
+const ids=['about','experience','skills','projects','plugins','education'];
+const items=document.querySelectorAll('.sb-item[href]');
+function setActive(id){items.forEach(el=>el.classList.toggle('active',el.getAttribute('href')==='#'+id));}
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{threshold:0.3});
+ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+items.forEach(el=>{el.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(el.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
 </script>
 </body>
 </html>
