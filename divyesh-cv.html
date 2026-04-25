@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divyesh J. Sapariya — Sr. WordPress Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --bg4: #30363d;
+    --border: #30363d;
+    --border2: #21262d;
+    --green: #3fb950;
+    --green2: #238636;
+    --blue: #58a6ff;
+    --blue2: #1f6feb;
+    --purple: #bc8cff;
+    --orange: #e3b341;
+    --red: #ff7b72;
+    --pink: #f778ba;
+    --teal: #39d353;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --accent: #58a6ff;
+    --tab-active: #0d1117;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── BROWSER CHROME ─── */
+  .browser-chrome {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+  .browser-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  .browser-dots { display: flex; gap: 6px; }
+  .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .dot:hover { opacity: 0.8; }
+  .dot.red { background: #ff5f57; }
+  .dot.yellow { background: #febc2e; }
+  .dot.green { background: #28c840; }
+
+  .browser-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+    overflow-x: auto;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    font-size: 11px;
+    color: var(--text2);
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: var(--bg3);
+    border-top: 2px solid transparent;
+  }
+  .tab.active {
+    background: var(--bg);
+    color: var(--text);
+    border-top: 2px solid var(--blue);
+  }
+  .tab-icon { font-size: 12px; }
+
+  .browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+  .nav-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { color: var(--text); border-color: var(--blue); }
+  .url-bar {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .url-lock { color: var(--green); font-size: 10px; }
+  .url-text { color: var(--text2); }
+  .url-text span { color: var(--text); }
+
+  /* ─── EDITOR LAYOUT ─── */
+  .editor-layout {
+    display: flex;
+    min-height: calc(100vh - 90px);
+  }
+
+  /* ─── SIDEBAR (FILE TREE) ─── */
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-header {
+    padding: 12px 16px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border2);
+    background: var(--bg3);
+  }
+  .file-tree { padding: 8px 0; flex: 1; }
+  .tree-section { margin-bottom: 4px; }
+  .tree-folder {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 16px;
+    font-size: 11px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tree-folder:hover { color: var(--text); background: var(--bg3); }
+  .tree-folder .arrow { font-size: 9px; transition: transform 0.2s; }
+  .tree-folder.open .arrow { transform: rotate(90deg); }
+  .tree-file {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 16px 4px 32px;
+    font-size: 11px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .tree-file:hover { background: var(--bg3); color: var(--text); }
+  .tree-file.active { background: var(--bg4); color: var(--text); }
+  .file-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-php { background: #7c7cb5; }
+  .dot-js { background: #f1e05a; }
+  .dot-css { background: #563d7c; }
+  .dot-md { background: var(--blue); }
+  .dot-json { background: var(--orange); }
+  .dot-html { background: var(--red); }
+  .dot-py { background: var(--green); }
+
+  .sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border2);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  /* ─── MAIN CONTENT ─── */
+  .main-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── EDITOR TABS ─── */
+  .editor-tabs {
+    display: flex;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .editor-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 11px;
+    color: var(--text2);
+    border-right: 1px solid var(--border2);
+    cursor: pointer;
+    white-space: nowrap;
+    background: var(--bg2);
+    border-top: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .editor-tab.active {
+    background: var(--bg);
+    color: var(--text);
+    border-top: 1px solid var(--blue);
+  }
+  .editor-tab:hover:not(.active) { background: var(--bg3); color: var(--text); }
+  .tab-close {
+    width: 14px; height: 14px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: var(--bg4);
+  }
+  .editor-tab:hover .tab-close { opacity: 1; }
+
+  /* ─── CODE CONTENT ─── */
+  .code-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    background: var(--bg);
+    padding: 0;
+  }
+
+  .line-numbers {
+    padding: 24px 0;
+    background: var(--bg2);
+    border-right: 1px solid var(--border2);
+    min-width: 48px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.6;
+    user-select: none;
+    position: sticky;
+    left: 0;
+  }
+  .line-numbers span { display: block; padding: 0 12px; }
+
+  .code-area {
+    flex: 1;
+    padding: 24px 32px;
+    line-height: 1.6;
+    font-size: 13px;
+  }
+
+  /* ─── CV SECTIONS styled as code ─── */
+  .code-comment { color: var(--text3); font-style: italic; }
+  .code-keyword { color: var(--purple); }
+  .code-string { color: var(--orange); }
+  .code-var { color: var(--blue); }
+  .code-func { color: var(--green); }
+  .code-prop { color: var(--red); }
+  .code-num { color: var(--teal); }
+  .code-class { color: #ffa657; }
+  .code-bracket { color: var(--text2); }
+
+  /* ─── HERO SECTION ─── */
+  .cv-hero {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cv-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(31, 111, 235, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(188, 140, 255, 0.08) 0%, transparent 60%);
+  }
+  .cv-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+  }
+  .cv-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e6edf3 30%, #58a6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .cv-role {
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cv-role::before { content: '//'; color: var(--text3); }
+  .cv-tagline {
+    font-size: 13px;
+    color: var(--text2);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .cv-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .contact-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--text2);
+    text-decoration: none;
+    background: var(--bg2);
+    transition: all 0.25s;
+  }
+  .contact-pill:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: rgba(88, 166, 255, 0.08);
+  }
+  .contact-pill .icon { font-size: 13px; }
+
+  .avatar-box {
+    position: relative;
+  }
+  .avatar-ring {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue2), var(--purple));
+    padding: 3px;
+    position: relative;
+  }
+  .avatar-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: var(--bg2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--blue);
+  }
+  .avatar-badge {
+    position: absolute;
+    bottom: 4px; right: 4px;
+    background: var(--green);
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+  }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .stat-cell {
+    padding: 16px 24px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--blue);
+    display: block;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* ─── CONTENT SECTIONS ─── */
+  .sections-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+  .section-panel {
+    padding: 32px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .section-panel.full-width {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+  .section-panel:nth-child(even) { border-right: none; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border2);
+  }
+  .section-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+  }
+  .section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text3);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+  }
+  .section-count {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--text3);
+    background: var(--bg3);
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  /* ─── EXPERIENCE CARDS ─── */
+  .exp-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    position: relative;
+    transition: all 0.25s;
+    cursor: default;
+  }
+  .exp-card:hover { border-color: var(--blue); background: rgba(31, 111, 235, 0.05); }
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 16px; bottom: 16px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--blue2);
+  }
+  .exp-card:nth-child(2)::before { background: var(--green2); }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    gap: 12px;
+  }
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .exp-badge {
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(88, 166, 255, 0.15);
+    color: var(--blue);
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .exp-badge.current {
+    background: rgba(63, 185, 80, 0.15);
+    color: var(--green);
+    border-color: rgba(63, 185, 80, 0.3);
+  }
+  .exp-role {
+    font-size: 11px;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .exp-dates {
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .exp-dates::before { content: '📅'; font-size: 10px; }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    font-size: 11px;
+    color: var(--text2);
+    padding: 2px 0 2px 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 9px;
+  }
+
+  /* ─── SKILLS GRID ─── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .skill-label {
+    font-size: 10px;
+    color: var(--text3);
+    width: 70px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    flex: 1;
+  }
+  .skill-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    background: var(--bg2);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .skill-tag:hover { border-color: var(--purple); color: var(--purple); }
+  .skill-tag.primary {
+    border-color: rgba(88, 166, 255, 0.4);
+    color: var(--blue);
+    background: rgba(88, 166, 255, 0.1);
+  }
+  .skill-tag.accent {
+    border-color: rgba(188, 140, 255, 0.4);
+    color: var(--purple);
+    background: rgba(188, 140, 255, 0.1);
+  }
+
+  /* ─── PROJECT CARDS ─── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.25s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue2), var(--purple));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .project-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .project-card:hover::after { opacity: 1; }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .project-icon {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .project-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .project-lang {
+    font-size: 9px;
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .project-lang::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .project-days {
+    font-size: 9px;
+    color: var(--text3);
+  }
+  .project-team {
+    font-size: 9px;
+    color: var(--text3);
+    margin-left: auto;
+  }
+  .project-desc {
+    font-size: 10px;
+    color: var(--text2);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ─── PLUGINS SECTION ─── */
+  .plugin-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .plugin-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+  .plugin-card:hover { border-color: var(--green); background: rgba(63, 185, 80, 0.05); }
+  .plugin-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-family: 'Syne', sans-serif;
+  }
+  .plugin-url {
+    font-size: 10px;
+    color: var(--green);
+    word-break: break-all;
+  }
+  .plugin-badge {
+    display: inline-block;
+    font-size: 9px;
+    margin-top: 6px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(63, 185, 80, 0.15);
+    border: 1px solid rgba(63, 185, 80, 0.3);
+    color: var(--green);
+  }
+
+  /* ─── CONTRIBUTION GRAPH ─── */
+  .contrib-section {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .contrib-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .contrib-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+  .contrib-count {
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .contrib-grid {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+  .contrib-week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .contrib-day {
+    width: 11px; height: 11px;
+    border-radius: 2px;
+    background: var(--bg3);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .contrib-day:hover { transform: scale(1.2); }
+  .contrib-day.l1 { background: #0e4429; }
+  .contrib-day.l2 { background: #006d32; }
+  .contrib-day.l3 { background: #26a641; }
+  .contrib-day.l4 { background: #39d353; }
+
+  /* ─── STATUS BAR ─── */
+  .status-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--blue2);
+    display: flex;
+    align-items: center;
+    padding: 4px 16px;
+    gap: 16px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+    z-index: 50;
+  }
+  .status-left, .status-right { display: flex; gap: 16px; align-items: center; }
+  .status-right { margin-left: auto; }
+  .status-item-bar { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .status-item-bar:hover { color: #fff; }
+
+  /* ─── TERMINAL SECTION ─── */
+  .terminal-section {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 0;
+  }
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  .terminal-dots { display: flex; gap: 5px; }
+  .terminal-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .terminal-title {
+    font-size: 11px;
+    color: var(--text3);
+    margin-left: 4px;
+  }
+  .terminal-body {
+    padding: 16px 20px;
+    font-size: 11px;
+    line-height: 1.8;
+    min-height: 120px;
+  }
+  .t-prompt { color: var(--green); }
+  .t-cmd { color: var(--text); }
+  .t-output { color: var(--text2); padding-left: 16px; display: block; }
+  .t-success { color: var(--green); }
+  .t-info { color: var(--blue); }
+  .t-cursor {
+    display: inline-block;
+    width: 8px; height: 13px;
+    background: var(--text);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ─── SERVER RACK ─── */
+  .server-section {
+    padding: 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .server-rack {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .server-unit {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+  .server-unit:hover { border-color: var(--green); }
+  .server-led {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+  }
+  .server-led.amber { background: var(--orange); }
+  .server-info { flex: 1; min-width: 0; }
+  .server-name {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .server-type { font-size: 9px; color: var(--text3); }
+  .server-uptime {
+    font-size: 9px;
+    color: var(--green);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ─── EDUCATION ─── */
+  .edu-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .edu-icon {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue2), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .edu-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .edu-sub { font-size: 11px; color: var(--text3); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeInUp 0.5s ease forwards; }
+
+  section { animation: fadeInUp 0.5s ease forwards; }
+
+  /* ─── MOBILE RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .sections-grid { grid-template-columns: 1fr; }
+    .section-panel { border-right: none; }
+    .section-panel:nth-child(even) { border-right: none; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .plugin-cards { grid-template-columns: 1fr; }
+    .cv-hero-grid { grid-template-columns: 1fr; }
+    .avatar-box { display: none; }
+    .browser-tabs { display: none; }
+  }
+  @media (max-width: 600px) {
+    .code-area { padding: 16px; font-size: 12px; }
+    .cv-hero { padding: 24px 20px; }
+    .section-panel { padding: 20px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat-num { font-size: 20px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .browser-bar { display: none; }
+    .status-right { display: none; }
+    .editor-tab { padding: 6px 10px; font-size: 10px; }
+    .server-rack { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+
+<!-- BROWSER CHROME -->
+<div class="browser-chrome">
+  <div class="browser-titlebar">
+    <div class="browser-dots">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+    <div class="browser-tabs">
+      <div class="tab active"><span class="tab-icon">📄</span> divyesh-cv.php</div>
+      <div class="tab"><span class="tab-icon">🎨</span> portfolio.css</div>
+      <div class="tab"><span class="tab-icon">⚙️</span> wp-config.php</div>
+      <div class="tab"><span class="tab-icon">🔧</span> functions.php</div>
+    </div>
+  </div>
+  <div class="browser-bar">
+    <button class="nav-btn">←</button>
+    <button class="nav-btn">→</button>
+    <button class="nav-btn">↻</button>
+    <div class="url-bar">
+      <span class="url-lock">🔒</span>
+      <span class="url-text"><span>divyesh.dev</span>/cv/sr-wordpress-developer</span>
+    </div>
+    <button class="nav-btn">⋮</button>
+  </div>
+</div>
+
+<!-- EDITOR LAYOUT -->
+<div class="editor-layout">
+
+  <!-- SIDEBAR FILE TREE -->
+  <div class="sidebar">
+    <div class="sidebar-header">Explorer</div>
+    <div class="file-tree">
+      <div class="tree-section">
+        <div class="tree-folder open"><span class="arrow">▶</span> 📁 divyesh-portfolio</div>
+        <a href="#about" class="tree-file active"><span class="file-dot dot-php"></span> about.php</a>
+        <a href="#experience" class="tree-file"><span class="file-dot dot-md"></span> experience.md</a>
+        <a href="#skills" class="tree-file"><span class="file-dot dot-js"></span> skills.js</a>
+        <a href="#projects" class="tree-file"><span class="file-dot dot-json"></span> projects.json</a>
+        <a href="#plugins" class="tree-file"><span class="file-dot dot-php"></span> plugins.php</a>
+        <a href="#education" class="tree-file"><span class="file-dot dot-md"></span> education.md</a>
+      </div>
+      <div class="tree-section">
+        <div class="tree-folder open"><span class="arrow">▶</span> 📁 node_modules</div>
+        <div class="tree-file"><span class="file-dot dot-js"></span> wordpress-core</div>
+        <div class="tree-file"><span class="file-dot dot-css"></span> elementor</div>
+        <div class="tree-file"><span class="file-dot dot-js"></span> woocommerce</div>
+        <div class="tree-file"><span class="file-dot dot-py"></span> python-scraper</div>
+      </div>
+      <div class="tree-section">
+        <div class="tree-folder"><span class="arrow">▶</span> 📁 wp-content</div>
+        <div class="tree-folder"><span class="arrow">▶</span> 📁 themes</div>
+        <div class="tree-folder"><span class="arrow">▶</span> 📁 plugins</div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="status-item"><span class="status-dot"></span> Available for projects</div>
+      <div class="status-item">📍 India</div>
+      <div class="status-item">🕐 UTC+5:30</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="main-content">
+
+    <!-- EDITOR TABS -->
+    <div class="editor-tabs">
+      <div class="editor-tab active"><span class="file-dot dot-php" style="margin-right:4px"></span> divyesh-cv.php <span class="tab-close">×</span></div>
+      <div class="editor-tab"><span class="file-dot dot-md" style="margin-right:4px"></span> README.md <span class="tab-close">×</span></div>
+      <div class="editor-tab"><span class="file-dot dot-json" style="margin-right:4px"></span> package.json <span class="tab-close">×</span></div>
+    </div>
+
+    <div class="code-content">
+      <div style="flex:1; overflow-y:auto;">
+
+        <!-- ─── HERO ─── -->
+        <section id="about">
+          <div class="cv-hero">
+            <div class="cv-hero-grid">
+              <div>
+                <div class="cv-name">Divyesh J. Sapariya</div>
+                <div class="cv-role">Sr. WordPress Developer &amp; Full Stack</div>
+                <div class="cv-tagline">
+                  5+ years crafting high-performance WordPress &amp; WooCommerce solutions. 
+                  From plugin development to team leadership — turning complex requirements 
+                  into elegant, scalable web experiences.
+                </div>
+                <div class="cv-contacts">
+                  <a href="tel:+919537023522" class="contact-pill"><span class="icon">📞</span> +91 95370 23522</a>
+                  <a href="mailto:divyeshsapariya35@gmail.com" class="contact-pill"><span class="icon">✉️</span> divyeshsapariya35@gmail.com</a>
+                  <a href="https://in.linkedin.com/in/sapariya-divyesh-222875192" class="contact-pill" target="_blank"><span class="icon">🔗</span> LinkedIn</a>
+                  <a class="contact-pill"><span class="icon">📍</span> India</a>
+                </div>
+              </div>
+              <div class="avatar-box">
+                <div class="avatar-ring">
+                  <div class="avatar-inner">DS</div>
+                </div>
+                <div class="avatar-badge"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATS BAR -->
+          <div class="stats-bar">
+            <div class="stat-cell">
+              <span class="stat-num">5+</span>
+              <span class="stat-label">Years Experience</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-num">250+</span>
+              <span class="stat-label">Websites Built</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-num">2</span>
+              <span class="stat-label">WP Plugins Published</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-num">∞</span>
+              <span class="stat-label">Lines of PHP</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── CONTRIBUTION GRAPH ─── -->
+        <div class="contrib-section">
+          <div class="contrib-header">
+            <span class="contrib-title">// contribution_activity.log</span>
+            <span class="contrib-count">250+ websites across 5 years</span>
+          </div>
+          <div class="contrib-grid" id="contribGrid"></div>
+        </div>
+
+        <!-- ─── MAIN SECTIONS GRID ─── -->
+        <div class="sections-grid">
+
+          <!-- EXPERIENCE -->
+          <div class="section-panel full-width" id="experience">
+            <div class="section-title">
+              <div class="section-icon">💼</div>
+              <span class="section-label">Work Experience</span>
+              <span class="section-count">2 companies</span>
+            </div>
+
+            <div class="exp-card">
+              <div class="exp-header">
+                <div>
+                  <div class="exp-company">Crest Infosystems Pvt. Ltd.</div>
+                  <div class="exp-role">function seniorWordPressDeveloper() {</div>
+                </div>
+                <div class="exp-badge current">● CURRENT</div>
+              </div>
+              <div class="exp-dates">Jan 2023 — Present</div>
+              <ul class="exp-bullets">
+                <li>Senior Software Engineer leading WordPress development team</li>
+                <li>Developed custom Elementor Add-on Plugins per client requirements</li>
+                <li>Improved client sites for optimal traffic &amp; Google Search ranking</li>
+                <li>Conducting technical interviews and onboarding new developers</li>
+                <li>Learning ReactJS and NodeJS for modern full-stack development</li>
+                <li>Redesigned sites based on Figma designs (NG Yachting, Cyberwhyze)</li>
+                <li>Improved site speed scores from 30 → 90+ (Cox Planning Solution)</li>
+                <li>Passed Web Core Vitals on legacy CodeIgniter/Java project (NG Yachting)</li>
+              </ul>
+            </div>
+
+            <div class="exp-card">
+              <div class="exp-header">
+                <div>
+                  <div class="exp-company">CoderKube Technologies</div>
+                  <div class="exp-role">function leadSoftwareEngineer() {</div>
+                </div>
+                <div class="exp-badge">Jul 2020 — Dec 2022</div>
+              </div>
+              <div class="exp-dates">Jul 2020 — Dec 2022 · 2.5 years</div>
+              <ul class="exp-bullets">
+                <li>Started as Trainee → promoted to Lead Software Engineer</li>
+                <li>Team leadership, task assignment &amp; progress tracking across 250+ websites</li>
+                <li>Plugin &amp; Theme development, API integrations, WooCommerce solutions</li>
+                <li>Developed custom Add-on Plugins for Gutenberg and Elementor</li>
+                <li>Managing technical interviews and mentoring team members</li>
+                <li>Project requirement analysis, time estimation &amp; delivery management</li>
+                <li>Python-based web scraping with IP rotation &amp; CSV data pipelines</li>
+                <li>ReactJS frontend with WordPress as REST API backend</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SKILLS -->
+          <div class="section-panel" id="skills">
+            <div class="section-title">
+              <div class="section-icon">⚡</div>
+              <span class="section-label">Tech Stack</span>
+            </div>
+            <div class="skills-grid">
+              <div class="skill-row">
+                <span class="skill-label">Backend</span>
+                <div class="skill-tags">
+                  <span class="skill-tag primary">PHP</span>
+                  <span class="skill-tag primary">WordPress</span>
+                  <span class="skill-tag primary">WooCommerce</span>
+                  <span class="skill-tag">MySQL</span>
+                  <span class="skill-tag">REST API</span>
+                  <span class="skill-tag">CodeIgniter</span>
+                </div>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">Frontend</span>
+                <div class="skill-tags">
+                  <span class="skill-tag primary">HTML5</span>
+                  <span class="skill-tag primary">CSS3</span>
+                  <span class="skill-tag primary">JavaScript</span>
+                  <span class="skill-tag primary">jQuery</span>
+                  <span class="skill-tag">Ajax</span>
+                  <span class="skill-tag">Bootstrap</span>
+                  <span class="skill-tag">JSON</span>
+                </div>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">Page Build</span>
+                <div class="skill-tags">
+                  <span class="skill-tag accent">Elementor</span>
+                  <span class="skill-tag accent">Divi</span>
+                  <span class="skill-tag accent">Gutenberg</span>
+                  <span class="skill-tag accent">WP Bakery</span>
+                </div>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">WP Plugins</span>
+                <div class="skill-tags">
+                  <span class="skill-tag">ACF</span>
+                  <span class="skill-tag">Dokan</span>
+                  <span class="skill-tag">LearnDash</span>
+                  <span class="skill-tag">LearnPress</span>
+                  <span class="skill-tag">WPML</span>
+                  <span class="skill-tag">Gravity Forms</span>
+                  <span class="skill-tag">MemberPress</span>
+                  <span class="skill-tag">WP Forms</span>
+                  <span class="skill-tag">CF7</span>
+                  <span class="skill-tag">Mailchimp</span>
+                  <span class="skill-tag">OptimizePress</span>
+                  <span class="skill-tag">RevSlider</span>
+                </div>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">Others</span>
+                <div class="skill-tags">
+                  <span class="skill-tag">ReactJS</span>
+                  <span class="skill-tag">NodeJS</span>
+                  <span class="skill-tag">Python</span>
+                  <span class="skill-tag">Git</span>
+                  <span class="skill-tag">Figma</span>
+                  <span class="skill-tag">SEO</span>
+                  <span class="skill-tag">Core Web Vitals</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EDUCATION + PLUGINS -->
+          <div class="section-panel" id="education">
+            <div class="section-title">
+              <div class="section-icon">🎓</div>
+              <span class="section-label">Education</span>
+            </div>
+            <div class="edu-card">
+              <div class="edu-icon">🎓</div>
+              <div>
+                <div class="edu-title">Bachelor of Computer Applications</div>
+                <div class="edu-sub">BCA · Computer Science</div>
+              </div>
+            </div>
+
+            <div class="section-title" style="margin-top:24px" id="plugins">
+              <div class="section-icon">🔌</div>
+              <span class="section-label">Published WP Plugins</span>
+              <span class="section-count">wordpress.org</span>
+            </div>
+            <div class="plugin-cards">
+              <a href="https://wordpress.org/plugins/remove-cart-products/" class="plugin-card" target="_blank">
+                <div class="plugin-name">Remove Cart Products</div>
+                <div class="plugin-url">wordpress.org/plugins/remove-cart-products/</div>
+                <span class="plugin-badge">● Live</span>
+              </a>
+              <a href="https://wordpress.org/plugins/user-wise-email-disable/" class="plugin-card" target="_blank">
+                <div class="plugin-name">User Wise Email Disable</div>
+                <div class="plugin-url">wordpress.org/plugins/user-wise-email-disable/</div>
+                <span class="plugin-badge">● Live</span>
+              </a>
+            </div>
+
+            <!-- SERVER RACK -->
+            <div class="section-title" style="margin-top:24px">
+              <div class="section-icon">🖥️</div>
+              <span class="section-label">Services Online</span>
+            </div>
+            <div class="server-rack">
+              <div class="server-unit">
+                <div class="server-led"></div>
+                <div class="server-info">
+                  <div class="server-name">WordPress Core</div>
+                  <div class="server-type">CMS Engine</div>
+                </div>
+                <span class="server-uptime">5y+</span>
+              </div>
+              <div class="server-unit">
+                <div class="server-led"></div>
+                <div class="server-info">
+                  <div class="server-name">WooCommerce</div>
+                  <div class="server-type">E-Commerce</div>
+                </div>
+                <span class="server-uptime">5y+</span>
+              </div>
+              <div class="server-unit">
+                <div class="server-led amber"></div>
+                <div class="server-info">
+                  <div class="server-name">ReactJS</div>
+                  <div class="server-type">Frontend Framework</div>
+                </div>
+                <span class="server-uptime" style="color:var(--orange)">Learning</span>
+              </div>
+              <div class="server-unit">
+                <div class="server-led amber"></div>
+                <div class="server-info">
+                  <div class="server-name">NodeJS</div>
+                  <div class="server-type">Runtime</div>
+                </div>
+                <span class="server-uptime" style="color:var(--orange)">Learning</span>
+              </div>
+              <div class="server-unit">
+                <div class="server-led"></div>
+                <div class="server-info">
+                  <div class="server-name">MySQL</div>
+                  <div class="server-type">Database</div>
+                </div>
+                <span class="server-uptime">5y+</span>
+              </div>
+              <div class="server-unit">
+                <div class="server-led"></div>
+                <div class="server-info">
+                  <div class="server-name">Python Scraper</div>
+                  <div class="server-type">Data Pipeline</div>
+                </div>
+                <span class="server-uptime">Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PROJECTS -->
+          <div class="section-panel full-width" id="projects">
+            <div class="section-title">
+              <div class="section-icon">🚀</div>
+              <span class="section-label">Selected Projects</span>
+              <span class="section-count">11 projects</span>
+            </div>
+            <div class="projects-grid">
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">⛵</div>
+                  <div class="project-name">NG Yachting</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">PHP / CodeIgniter</span>
+                  <span class="project-days">Ongoing</span>
+                </div>
+                <div class="project-desc">Core PHP yacht listing platform. Integrated CodeIgniter & Java for API data. Redesigned UI, improved Core Web Vitals, Figma design suggestion.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🎓</div>
+                  <div class="project-name">Build Impossible</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / Divi LMS</span>
+                  <span class="project-days">1 Month</span>
+                  <span class="project-team">👥 2</span>
+                </div>
+                <div class="project-desc">LMS site with auto-progression on video completion. Restricted access per subscription. Multi-video player with seamless in-page navigation.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🏪</div>
+                  <div class="project-name">Made In Park City</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / Dokan</span>
+                  <span class="project-days">8 Days</span>
+                </div>
+                <div class="project-desc">Multi-vendor Dokan marketplace with custom product ordering. Overridden search showing products, vendors, categories in one page.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">📅</div>
+                  <div class="project-name">Dante Integration</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress Plugin</span>
+                  <span class="project-days">21 Days</span>
+                </div>
+                <div class="project-desc">Custom plugin with API key auth, CPT with shortcodes, custom calendar & booking, course/cart pages like WooCommerce, rewrite rules.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🎟️</div>
+                  <div class="project-name">Experience Activities</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress Plugin</span>
+                  <span class="project-days">18 Days</span>
+                </div>
+                <div class="project-desc">Custom booking plugin with API, custom calendar with cart & confirmation flow. Shortcode-based display with data ID parameters.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🎨</div>
+                  <div class="project-name">Rise Up Creatives</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress</span>
+                  <span class="project-days">12 Days</span>
+                  <span class="project-team">👥 2</span>
+                </div>
+                <div class="project-desc">Custom theme with banner API, MemberPress for subscription gating. Speed optimization and conditional content access control.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🗺️</div>
+                  <div class="project-name">Sayvale</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / ACF</span>
+                  <span class="project-days">3 Days</span>
+                </div>
+                <div class="project-desc">Custom theme with dynamic Google Maps. Click-driven list-to-map interaction with news listing and load-more. Speed optimized.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🧑‍⚕️</div>
+                  <div class="project-name">Patient Better</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / LearnPress</span>
+                  <span class="project-days">5 Days</span>
+                  <span class="project-team">👥 3</span>
+                </div>
+                <div class="project-desc">Updated legacy LP plugin, redesigned for improved UX, overridden templates. Astra theme with child theme customization.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🌐</div>
+                  <div class="project-name">Cyberwhyze</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / Elementor</span>
+                  <span class="project-days">Ongoing</span>
+                </div>
+                <div class="project-desc">Full Figma-to-Elementor build. SEO implementation, blog detail page improvements, speed optimization and design suggestions.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">📐</div>
+                  <div class="project-name">Cox Planning Solution</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / Elementor</span>
+                  <span class="project-days">Ongoing</span>
+                </div>
+                <div class="project-desc">Speed score improved from 30 → 90+. Full site redesign from provided design. Ongoing maintenance and optimization.</div>
+              </div>
+              <div class="project-card">
+                <div class="project-header">
+                  <div class="project-icon">🧹</div>
+                  <div class="project-name">Peters Cleaners</div>
+                </div>
+                <div class="project-meta">
+                  <span class="project-lang">WordPress / ACF</span>
+                  <span class="project-days">6 Days</span>
+                </div>
+                <div class="project-desc">Custom theme with ACF, location-based Google Map, blog with load-more. Full speed optimization pass.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ─── TERMINAL ─── -->
+        <div class="terminal-section">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <div class="terminal-dot" style="background:#ff5f57"></div>
+              <div class="terminal-dot" style="background:#febc2e"></div>
+              <div class="terminal-dot" style="background:#28c840"></div>
+            </div>
+            <span class="terminal-title">bash — divyesh@portfolio</span>
+          </div>
+          <div class="terminal-body">
+            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cmd">whoami --verbose</span></div>
+            <span class="t-output t-info">→ Sr. WordPress Developer | Full Stack | Team Lead</span>
+            <br>
+            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cmd">git log --oneline experience</span></div>
+            <span class="t-output"><span class="t-success">a1b2c3d</span> feat: joined Crest Infosystems as Senior Developer (Jan 2023)</span>
+            <span class="t-output"><span class="t-success">e4f5g6h</span> feat: promoted to Lead Engineer at CoderKube (2021)</span>
+            <span class="t-output"><span class="t-success">i7j8k9l</span> init: joined CoderKube as Trainee WordPress Dev (Jul 2020)</span>
+            <br>
+            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cmd">npm run hire-me</span></div>
+            <span class="t-output t-success">✓ Contact: divyeshsapariya35@gmail.com</span>
+            <span class="t-output t-success">✓ Phone: +91 95370 23522</span>
+            <span class="t-output t-success">✓ Status: Open to opportunities</span>
+            <br>
+            <div><span class="t-prompt">divyesh@portfolio:~$</span> <span class="t-cursor"></span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-left">
+    <span class="status-item-bar">⎇ main</span>
+    <span class="status-item-bar">✓ 0 errors</span>
+    <span class="status-item-bar">⚡ WordPress Expert</span>
+  </div>
+  <div class="status-right">
+    <span class="status-item-bar">PHP 8.2</span>
+    <span class="status-item-bar">UTF-8</span>
+    <span class="status-item-bar">🇮🇳 India</span>
+    <span class="status-item-bar">5+ yrs experience</span>
+  </div>
+</div>
+
+<script>
+  // Generate contribution graph
+  const grid = document.getElementById('contribGrid');
+  const levels = [0,0,0,1,1,2,2,2,3,3,4];
+  for(let w = 0; w < 52; w++) {
+    const week = document.createElement('div');
+    week.className = 'contrib-week';
+    for(let d = 0; d < 7; d++) {
+      const day = document.createElement('div');
+      const lvl = levels[Math.floor(Math.random() * levels.length)];
+      day.className = `contrib-day${lvl > 0 ? ' l'+lvl : ''}`;
+      day.title = `${lvl === 0 ? 'No' : lvl === 1 ? '1-3' : lvl === 2 ? '4-6' : lvl === 3 ? '7-9' : '10+'} contributions`;
+      week.appendChild(day);
+    }
+    grid.appendChild(week);
+  }
+
+  // Smooth scroll for file tree links
+  document.querySelectorAll('.tree-file[href]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.tree-file').forEach(f => f.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  // Typing effect in terminal
+  const cmds = ['php artisan inspire', 'wp plugin list --status=active', 'git status'];
+  let cmdIdx = 0;
+  const cursor = document.querySelector('.t-cursor');
+  setInterval(() => {
+    // Just blink the cursor — typing already shown statically
+  }, 500);
+</script>
+</body>
+</html>
